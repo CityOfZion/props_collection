@@ -1,0 +1,31 @@
+# settings that apply to all contracts unless explicitly overridden in the contracts section
+defaults:
+  contract-source-network: mainnet
+  contract-destination: neo-express
+  contract-generate-sdk: false
+  sdk-language: python
+# which contracts to download with what options
+contracts:
+  # Label can be anything that allows you to identify which contract this is
+  # (assuming you can't remember all contract hashes by heart)
+  - label: Props - dice
+    script-hash: '0x4380f2c1de98bb267d3ea821897ec571a04fe3e0'
+# which tools are available for contract downloading and/or generating SDKs
+tools:
+  neo-express:
+    canGenerateSDK: false
+    canDownloadContract: true
+    executable-path: null
+    config-path: ../default.neo-express
+# list of networks with corresponding RPC server addresses to the networks used for source information downloading
+networks:
+  - label: mainnet
+    hosts:
+      - 'https://mainnet1.neo.coz.io:443'
+      - 'http://seed1.neo.org:10332'
+  - label: testnet
+    hosts:
+      - 'https://testnet1.neo.coz.io:443'
+  - label: priv
+    hosts:
+      - 'http://127.0.0.1:10332'
