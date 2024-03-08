@@ -1,14 +1,16 @@
-import { CONST, rpc, sc, u, wallet } from '@cityofzion/neon-core'
-import { ContractInvocation, Neo3Invoker } from '@cityofzion/neo3-invoker'
-import { pollingOptions } from '../types'
+import { rpc, sc, u, wallet } from '@cityofzion/neon-core'
+import {ParsedLog, pollingOptions} from '../types'
 import { experimental } from '@cityofzion/neon-js'
+import { NetworkOption } from '../constants/config'
+import {NeonParser} from "@cityofzion/neon-dappkit";
+import {RpcResponseStackItem} from "@cityofzion/neon-dappkit-types";
 
 export class Utils {
-  static async transactionCompletion(txid: string, opts?: pollingOptions): Promise<rpc.ApplicationLogJson> {
+  static async transactionCompletion(txid: string, opts?: pollingOptions): Promise<ParsedLog> {
     let options = {
-      period: 500,
-      timeout: 2500,
-      node: 'http://127.0.0.1:50012',
+      period: 1000,
+      timeout: 30000,
+      node: NetworkOption.MainNet,
     }
     options = { ...options, ...opts }
 
@@ -16,29 +18,83 @@ export class Utils {
 
     for (let i = 0; i < Math.floor(options.timeout / options.period); i++) {
       try {
-        return await client.getApplicationLog(txid)
+
+        //parse the stack
+        const log = await client.getApplicationLog(txid)
+
+        const parsedLog: ParsedLog = {
+          log,
+          parsedGASConsumption: parseInt(log.executions[0].gasconsumed) / 10**8,
+          parsedStack: log.executions[0].stack!.map( (stackItem) => {
+            return NeonParser.parseRpcResponse(stackItem as RpcResponseStackItem)
+          }),
+          parsedNotifications: log.executions[0].notifications!.map( (notificationItem) => {
+            return {
+              'scriptHash': notificationItem.contract,
+              'eventName': notificationItem.eventname,
+              'state': NeonParser.parseRpcResponse(notificationItem.state as RpcResponseStackItem)
+            }
+          })
+        }
+        return parsedLog
       } catch (e) {}
       await this.sleep(options.period)
     }
     throw new Error('Unable to locate the requested transaction.')
   }
 
-  static async deploy(invoker: Neo3Invoker, nefRaw: Buffer, rawManifest: any) {
-    const nef = sc.NEF.fromBuffer(nefRaw)
-    const manifest = sc.ContractManifest.fromJson(rawManifest)
+  static chiSquared(samples: string[]): number {
+    const bins = {}
 
-    const invocation: ContractInvocation = {
-      scriptHash: CONST.NATIVE_CONTRACT_HASH.ManagementContract,
-      operation: 'deploy',
-      args: [
-        { type: 'ByteArray', value: u.HexString.fromHex(nef.serialize(), true) },
-        { type: 'String', value: JSON.stringify(manifest.toJson()) },
-      ],
+    for (let sample of samples) {
+      // @ts-ignore
+      if (bins[sample]) {
+        // @ts-ignore
+        bins[sample] += 1
+      } else {
+        // @ts-ignore
+        bins[sample] = 1
+      }
     }
-    return invoker.invokeFunction({
-      invocations: [invocation],
-      signers: [],
-    })
+
+    // chi-squared test for uniformity
+    let chiSquared = 0
+    const expected = samples.length/Object.keys(bins).length
+    const keys: any[] = Object.keys(bins)
+    for (let i = 0; i< keys.length; i++) {
+      // @ts-ignore
+      chiSquared += ((bins[keys[i]] - expected) ** 2) / expected
+    }
+    return chiSquared
+  }
+
+  static async deployContract(
+    node: string,
+    networkMagic: number,
+    nefRaw: Buffer,
+    manifestRaw: any,
+    signer: wallet.Account
+  ): Promise<string> {
+    const config = {
+      networkMagic,
+      rpcAddress: node,
+      account: signer,
+    }
+
+    const nef = sc.NEF.fromBuffer(nefRaw)
+    const manifest = sc.ContractManifest.fromJson(manifestRaw)
+
+    const assembledScript = new sc.ScriptBuilder()
+      .emit(sc.OpCode.ABORT)
+      .emitPush(u.HexString.fromHex(signer.scriptHash))
+      .emitPush(nef.checksum)
+      .emitPush(manifest.name)
+      .build()
+    const scriptHash = u.reverseHex(u.hash160(assembledScript))
+
+    console.log(`deploying ${manifest.name} to 0x${scriptHash} ...`)
+
+    return experimental.deployContract(nef, manifest, config)
   }
 
   static async sleep(ms: number) {

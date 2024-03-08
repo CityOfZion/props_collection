@@ -1,31 +1,37 @@
-# settings that apply to all contracts unless explicitly overridden in the contracts section
 defaults:
-  contract-source-network: mainnet
-  contract-destination: neo-express
-  contract-generate-sdk: false
-  sdk-language: python
-# which contracts to download with what options
+    contract-source-network: mainnet
+    contract-destination: neo-express
+    contract-generate-sdk: true
+    contract-download: true
+    on-chain:
+        languages:
+            - python
+        destinations:
+            python: cpm_out
 contracts:
-  # Label can be anything that allows you to identify which contract this is
-  # (assuming you can't remember all contract hashes by heart)
-  - label: Props - dice
-    script-hash: '0x4380f2c1de98bb267d3ea821897ec571a04fe3e0'
-# which tools are available for contract downloading and/or generating SDKs
+    - label: Props - dice
+      script-hash: 0x4380f2c1de98bb267d3ea821897ec571a04fe3e0
+      source-network: mainnet
+      generate-sdk: true
+      download: true
+    - label: Props - collection
+      script-hash: 0xf05651bc505fd5c7d36593f6e8409932342f9085
+      source-network: mainnet
+      generate-sdk: true
+      download: true
 tools:
-  neo-express:
-    canGenerateSDK: false
-    canDownloadContract: true
-    executable-path: null
-    config-path: ../default.neo-express
-# list of networks with corresponding RPC server addresses to the networks used for source information downloading
+    neo-express:
+        canGenerateSDK: false
+        canDownloadContract: true
+        config-path: ../default.neo-express
 networks:
-  - label: mainnet
-    hosts:
-      - 'https://mainnet1.neo.coz.io:443'
-      - 'http://seed1.neo.org:10332'
-  - label: testnet
-    hosts:
-      - 'https://testnet1.neo.coz.io:443'
-  - label: priv
-    hosts:
-      - 'http://127.0.0.1:10332'
+    - label: mainnet
+      hosts:
+        - https://mainnet1.neo.coz.io:443
+        - http://seed1.neo.org:10332
+    - label: testnet
+      hosts:
+        - https://testnet1.neo.coz.io:443
+    - label: priv
+      hosts:
+        - http://127.0.0.1:10332

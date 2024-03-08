@@ -8,190 +8,204 @@
                 "offset": 0,
                 "parameters": [
                     {
-                        "name": "description",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "description"
                     },
                     {
-                        "name": "collection_type",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "collection_type"
                     },
                     {
-                        "name": "extra",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "extra"
                     },
                     {
-                        "name": "vals",
-                        "type": "Array"
+                        "type": "Array",
+                        "generic": {
+                            "type": "ByteArray"
+                        },
+                        "name": "vals"
                     }
                 ],
-                "returntype": "Integer",
-                "safe": false
+                "safe": false,
+                "returntype": "Integer"
             },
             {
                 "name": "get_collection_json",
-                "offset": 59,
+                "offset": 51,
                 "parameters": [
                     {
-                        "name": "collection_id",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "collection_id"
                     }
                 ],
+                "safe": false,
                 "returntype": "Map",
-                "safe": false
+                "returngenerickey": {
+                    "type": "String"
+                },
+                "returngenericitem": {
+                    "type": "Any"
+                }
             },
             {
                 "name": "get_collection",
-                "offset": 69,
+                "offset": 61,
                 "parameters": [
                     {
-                        "name": "collection_id",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "collection_id"
                     }
                 ],
-                "returntype": "Array",
-                "safe": false
+                "safe": false,
+                "returntype": "Array"
             },
             {
                 "name": "get_collection_element",
-                "offset": 79,
+                "offset": 71,
                 "parameters": [
                     {
-                        "name": "collection_id",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "collection_id"
                     },
                     {
-                        "name": "index",
-                        "type": "Integer"
+                        "type": "Integer",
+                        "name": "index"
                     }
                 ],
-                "returntype": "ByteArray",
-                "safe": false
+                "safe": false,
+                "returntype": "ByteArray"
             },
             {
                 "name": "get_collection_length",
-                "offset": 97,
+                "offset": 84,
                 "parameters": [
                     {
-                        "name": "collection_id",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "collection_id"
                     }
                 ],
-                "returntype": "Integer",
-                "safe": false
+                "safe": false,
+                "returntype": "Integer"
             },
             {
                 "name": "get_collection_values",
-                "offset": 107,
+                "offset": 94,
                 "parameters": [
                     {
-                        "name": "collection_id",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "collection_id"
                     }
                 ],
+                "safe": false,
                 "returntype": "Array",
-                "safe": false
+                "returngeneric": {
+                    "type": "ByteArray"
+                }
             },
             {
                 "name": "map_bytes_onto_collection",
-                "offset": 126,
+                "offset": 108,
                 "parameters": [
                     {
-                        "name": "collection_id",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "collection_id"
                     },
                     {
-                        "name": "entropy",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "entropy"
                     }
                 ],
-                "returntype": "ByteArray",
-                "safe": false
+                "safe": false,
+                "returntype": "ByteArray"
             },
             {
                 "name": "sample_from_collection",
-                "offset": 214,
+                "offset": 191,
                 "parameters": [
                     {
-                        "name": "collection_id",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "collection_id"
                     },
                     {
-                        "name": "samples",
-                        "type": "Integer"
+                        "type": "Integer",
+                        "name": "samples"
                     }
                 ],
+                "safe": false,
                 "returntype": "Array",
-                "safe": false
+                "returngeneric": {
+                    "type": "ByteArray"
+                }
             },
             {
                 "name": "sample_from_runtime_collection",
-                "offset": 397,
+                "offset": 376,
                 "parameters": [
                     {
-                        "name": "vals",
-                        "type": "Array"
+                        "type": "Array",
+                        "generic": {
+                            "type": "ByteArray"
+                        },
+                        "name": "vals"
                     },
                     {
-                        "name": "samples",
-                        "type": "Integer"
+                        "type": "Integer",
+                        "name": "samples"
                     },
                     {
-                        "name": "pick",
-                        "type": "Boolean"
+                        "type": "Boolean",
+                        "name": "pick"
                     }
                 ],
+                "safe": false,
                 "returntype": "Array",
-                "safe": false
+                "returngeneric": {
+                    "type": "ByteArray"
+                }
             },
             {
                 "name": "total_collections",
-                "offset": 601,
+                "offset": 580,
                 "parameters": [],
-                "returntype": "Integer",
-                "safe": false
+                "safe": false,
+                "returntype": "Integer"
             },
             {
                 "name": "update",
-                "offset": 607,
+                "offset": 586,
                 "parameters": [
                     {
-                        "name": "script",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "script"
                     },
                     {
-                        "name": "manifest",
-                        "type": "ByteArray"
+                        "type": "ByteArray",
+                        "name": "manifest"
                     },
                     {
-                        "name": "data",
-                        "type": "Any"
+                        "type": "Any",
+                        "name": "data"
                     }
                 ],
-                "returntype": "Void",
-                "safe": false
+                "safe": false,
+                "returntype": "Void"
             },
             {
                 "name": "_deploy",
-                "offset": 1025,
+                "offset": 876,
                 "parameters": [
                     {
-                        "name": "data",
-                        "type": "Any"
+                        "type": "Any",
+                        "name": "data"
                     },
                     {
-                        "name": "update",
-                        "type": "Boolean"
+                        "type": "Boolean",
+                        "name": "update"
                     }
                 ],
-                "returntype": "Void",
-                "safe": false
-            },
-            {
-                "name": "_initialize",
-                "offset": 1063,
-                "parameters": [],
-                "returntype": "Void",
-                "safe": false
+                "safe": false,
+                "returntype": "Void"
             }
         ],
         "events": [
@@ -208,8 +222,24 @@
     },
     "permissions": [
         {
-            "contract": "*",
-            "methods": "*"
+            "contract": "0x4380f2c1de98bb267d3ea821897ec571a04fe3e0",
+            "methods": [
+                "map_bytes_onto_range",
+                "rand_between"
+            ]
+        },
+        {
+            "contract": "0xfffdc93764dbaddd97c48f252a53ea4643faa3fd",
+            "methods": [
+                "update"
+            ]
+        },
+        {
+            "contract": "0xacce6fd80d44e1796aa0c2c625e9e4e0ce39efc0",
+            "methods": [
+                "serialize",
+                "deserialize"
+            ]
         }
     ],
     "trusts": [],

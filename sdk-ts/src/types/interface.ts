@@ -1,14 +1,24 @@
-import { Neo3Invoker } from '@cityofzion/neo3-invoker'
-import { Neo3Parser } from '@cityofzion/neo3-parser'
+import {NeonInvoker, NeonParser} from "@cityofzion/neon-dappkit";
+import { NetworkOption } from '../constants/config'
+import Neon, {rpc} from '@cityofzion/neon-core'
 
-export type SmartContractConfig = {
-  scriptHash: string
-  invoker: Neo3Invoker
-  parser: Neo3Parser
+export interface ConstructorOptions {
+  node?: string
+  scriptHash?: string
+  invoker?: NeonInvoker
+  parser?: typeof NeonParser
+  account?: Neon.wallet.Account | undefined
 }
 
 export type pollingOptions = {
-  period: number
-  timeout: number
-  node: string
+  period?: number
+  timeout?: number
+  node?: NetworkOption
+}
+
+export type ParsedLog = {
+  log: rpc.ApplicationLogJson
+  parsedStack: any
+  parsedNotifications: any
+  parsedGASConsumption: any
 }

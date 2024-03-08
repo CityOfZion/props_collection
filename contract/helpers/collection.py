@@ -1,5 +1,6 @@
-from typing import Any, Dict, cast
+from typing import Any, Dict, cast, List
 from boa3.builtin.type import UInt160
+from boa3.builtin.type.helper import to_bytes, to_int
 from boa3.builtin.interop.storage import get, put
 from boa3.builtin.interop.stdlib import serialize, deserialize
 
@@ -18,16 +19,16 @@ class Collection:
         self._description: bytes = b''
         self._type: bytes = b''
         self._extra: bytes = b''
-        self._values: [bytes] = []
+        self._values: List[bytes] = []
 
     def get_id(self) -> bytes:
         return self._id
 
-    def get_values(self) -> [bytes]:
+    def get_values(self) -> List[bytes]:
         return self._values
 
     def get_value(self, index: int) -> bytes:
-        collection_values: [bytes] = self._values
+        collection_values: List[bytes] = self._values
         return collection_values[index]
 
     def set_author(self, author: UInt160) -> bool:
@@ -50,7 +51,7 @@ class Collection:
         self._type = collection_type
         return True
 
-    def set_values(self, values: [bytes]) -> bool:
+    def set_values(self, values: List[bytes]) -> bool:
         self._values = values
         return True
 
@@ -66,7 +67,7 @@ class Collection:
         return exported
 
 
-def create_collection_internal(author: UInt160, description: bytes, collection_type: bytes, extra: bytes, values: [bytes]) -> bytes:
+def create_collection_internal(author: UInt160, description: bytes, collection_type: bytes, extra: bytes, values: List[bytes]) -> bytes:
     """
     Creates a new collection
     :param author: The author of the collection
@@ -77,7 +78,7 @@ def create_collection_internal(author: UInt160, description: bytes, collection_t
     :return: The collection id
     """
     collection: Collection = Collection()
-    collection_id: bytes = (total_collections_internal() + 1).to_bytes()
+    collection_id: bytes = to_bytes(total_collections_internal() + 1)
     collection.set_id(collection_id)
     collection.set_author(author)
     collection.set_description(description)
@@ -129,7 +130,7 @@ def total_collections_internal() -> int:
     total: bytes = get(TOTAL_COLLECTIONS)
     if len(total) == 0:
         return 0
-    return total.to_int()
+    return to_int(total)
 
 
 def mk_collection_key(collection_id: bytes) -> bytes:

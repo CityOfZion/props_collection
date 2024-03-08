@@ -1,7 +1,7 @@
 {
-  "name": "@cityofzion/props-item",
+  "name": "@cityofzion/props-collection",
   "version": "0.0.14",
-  "description": "A cryptographic primative for physical assets (SDK).",
+  "description": "A contract for storing and retrieving arrays of data",
   "main": "./dist/cjs/index.js",
   "type": "module",
   "module": "./dist/esm/index.js",
@@ -29,16 +29,15 @@
   "license": "Apache-2.0",
   "homepage": "https://coz.io",
   "dependencies": {
-    "@cityofzion/neo3-invoker": "^1.0.3",
+    "@cityofzion/neon-dappkit": "^0.4.0",
+    "@cityofzion/neon-dappkit-types": "^0.3.1",
+    "@cityofzion/neon-js": "^5.3.0",
+    "@cityofzion/neon-core": "^5.0.0-next.16",
     "@types/lodash": "^4.14.176",
-    "@types/node": "^16.11.11"
+    "@types/node": "^16.11.11",
+    "save": "^2.9.0"
   },
   "devDependencies": {
-    "@cityofzion/neon-core": "^5.0.0-next.16",
-    "@cityofzion/neon-invoker": "^1.0.2",
-    "@cityofzion/neon-js": "^5.3.0",
-    "@cityofzion/neon-parser": "1.5.2",
-    "@cityofzion/props": "^0.2.0",
     "@types/chai": "^4.3.3",
     "@types/expect": "^24.3.0",
     "@types/mocha": "^9.1.1",
