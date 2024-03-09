@@ -1,4 +1,7 @@
-export class CollectionAPI {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CollectionAPI = void 0;
+class CollectionAPI {
     static createCollection(scriptHash, params) {
         return {
             scriptHash,
@@ -105,4 +108,5 @@ export class CollectionAPI {
         };
     }
 }
+exports.CollectionAPI = CollectionAPI;
 //# sourceMappingURL=collection.js.map

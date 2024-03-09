@@ -2,7 +2,7 @@ import { CollectionAPI } from './api'
 import { ConstructorOptions } from './types'
 import { rpc } from '@cityofzion/neon-core'
 import { NetworkOption } from './constants/config'
-import { NeonInvoker, NeonParser } from "@cityofzion/neon-dappkit";
+import { NeonInvoker, NeonParser } from '@cityofzion/neon-dappkit'
 import {
   CreateCollection,
   GetCollection,
@@ -42,7 +42,6 @@ const DEFAULT_OPTIONS: ConstructorOptions = {
  * ```
  */
 export class Collection {
-
   private config: ConstructorOptions
   private initialized: boolean
 
@@ -73,7 +72,7 @@ export class Collection {
     if (!this.initialized) {
       this.config.invoker = await NeonInvoker.init({
         rpcAddress: this.config.node as string,
-        account: this.config.account
+        account: this.config.account,
       })
       this.initialized = true
     }

@@ -1,13 +1,6 @@
-import { CollectionAPI } from './api';
+import { ConstructorOptions } from './types';
 import { rpc } from '@cityofzion/neon-core';
-import { NetworkOption } from './constants/config';
-import { NeonInvoker, NeonParser } from '@cityofzion/neon-dappkit';
-const DEFAULT_OPTIONS = {
-    node: NetworkOption.MainNet,
-    scriptHash: '0xf05651bc505fd5c7d36593f6e8409932342f9085',
-    parser: NeonParser,
-    account: undefined,
-};
+import { CreateCollection, GetCollection, GetCollectionElement, GetCollectionJSON, GetCollectionLength, GetCollectionValues, MapBytesOntoCollection, SampleFromCollection, SampleFromRuntimeCollection, Update } from './types/manifest';
 /**
  * The Collection prop is designed to store static-immutable data for reference in other projects. Storing static data
  * in contracts is very expensive and inefficient, especially for new projects.  This contract resolves that issue by creating
@@ -26,42 +19,17 @@ const DEFAULT_OPTIONS = {
  * console.log(total) // outputs the total collection count in the contract
  * ```
  */
-export class Collection {
-    constructor(configOptions = {}) {
-        this.initialized = 'invoker' in configOptions;
-        this.config = { ...DEFAULT_OPTIONS, ...configOptions };
-    }
+export declare class Collection {
+    private config;
+    private initialized;
+    constructor(configOptions?: ConstructorOptions);
     /**
      * DO NOT EDIT ME
      * The contract script hash that is being interfaced with.
      */
-    get scriptHash() {
-        if (this.config.scriptHash) {
-            return this.config.scriptHash;
-        }
-        throw new Error('no scripthash defined');
-    }
-    get node() {
-        if (this.config.node) {
-            return new rpc.RPCClient(this.config.node);
-        }
-        throw new Error('no node selected!');
-    }
-    async init() {
-        if (!this.initialized) {
-            this.config.invoker = await NeonInvoker.init({
-                rpcAddress: this.config.node,
-                account: this.config.account,
-            });
-            this.initialized = true;
-        }
-        return true;
-    }
-    /// ///////////////////////////////////////////////////
-    /// ///////////////////////////////////////////////////
-    /// /////////////CONTRACT METHODS//////////////////////
-    /// ///////////////////////////////////////////////////
-    /// ///////////////////////////////////////////////////
+    get scriptHash(): string;
+    get node(): rpc.RPCClient;
+    init(): Promise<boolean>;
     /**
      * Publishes an array of immutable data to the smart contract along with some useful metadata.
      *
@@ -73,13 +41,7 @@ export class Collection {
      *
      * @returns A transaction ID.  Refer to {@link Util.transactionCompletion} for parsing the response.
      */
-    async createCollection(params) {
-        await this.init();
-        return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.createCollection(this.config.scriptHash, params)],
-            signers: [],
-        });
-    }
+    createCollection(params: CreateCollection): Promise<string>;
     /**
      * Gets a JSON formatting collection from the smart contract.
      *
@@ -89,17 +51,7 @@ export class Collection {
      *
      * @returns The requested collection **OR** a txid if the signer parameter is populated.
      */
-    async getCollectionJSON(params) {
-        await this.init();
-        const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollectionJSON(this.config.scriptHash, params)],
-            signers: [],
-        });
-        if (res.stack.length === 0) {
-            throw new Error(res.exception ?? 'unrecognized response');
-        }
-        return this.config.parser.parseRpcResponse(res.stack[0]);
-    }
+    getCollectionJSON(params: GetCollectionJSON): Promise<any>;
     /**
      * Gets the bytestring representation of the collection.  This is primarilly used for inter-contract interfacing,
      * but we include it here for completeness.
@@ -110,17 +62,7 @@ export class Collection {
      *
      * @returns The bytestring representation of the collection. **OR** a txid if the signer parameter is populated.
      */
-    async getCollection(params) {
-        await this.init();
-        const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollection(this.config.scriptHash, params)],
-            signers: [],
-        });
-        if (res.stack.length === 0) {
-            throw new Error(res.exception ?? 'unrecognized response');
-        }
-        return this.config.parser.parseRpcResponse(res.stack[0]);
-    }
+    getCollection(params: GetCollection): Promise<any>;
     /**
      * Returns the value of a collection from a requested index.
      *
@@ -129,17 +71,7 @@ export class Collection {
      *
      * @returns The value of the collection element **OR** a txid if the signer parameter is populated.
      */
-    async getCollectionElement(params) {
-        await this.init();
-        const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollectionElement(this.config.scriptHash, params)],
-            signers: [],
-        });
-        if (res.stack.length === 0) {
-            throw new Error(res.exception ?? 'unrecognized response');
-        }
-        return this.config.parser.parseRpcResponse(res.stack[0]);
-    }
+    getCollectionElement(params: GetCollectionElement): Promise<any>;
     /**
      * Gets the array length of a requested collection.
      *
@@ -147,17 +79,7 @@ export class Collection {
      *
      * @returns The length of the collection **OR** a txid if the signer parameter is populated.
      */
-    async getCollectionLength(params) {
-        await this.init();
-        const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollectionLength(this.config.scriptHash, params)],
-            signers: [],
-        });
-        if (res.stack.length === 0) {
-            throw new Error(res.exception ?? 'unrecognized response');
-        }
-        return this.config.parser.parseRpcResponse(res.stack[0]);
-    }
+    getCollectionLength(params: GetCollectionLength): Promise<any>;
     /**
      * Gets the values of a collection, omitting the metadata.
      *
@@ -165,17 +87,7 @@ export class Collection {
      *
      * @returns The values in the collection **OR** a txid if the signer parameter is populated.
      */
-    async getCollectionValues(params) {
-        await this.init();
-        const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollectionValues(this.config.scriptHash, params)],
-            signers: [],
-        });
-        if (res.stack.length === 0) {
-            throw new Error(res.exception ?? 'unrecognized response');
-        }
-        return this.config.parser.parseRpcResponse(res.stack[0]);
-    }
+    getCollectionValues(params: GetCollectionValues): Promise<any>;
     /**
      * Maps byte entropy onto a collection's values and returns the index of the result.  The mapping is made as follows:
      *
@@ -191,13 +103,7 @@ export class Collection {
      * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
      * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
      */
-    async mapBytesOntoCollection(params) {
-        await this.init();
-        return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.mapBytesOntoCollection(this.config.scriptHash, params)],
-            signers: [],
-        });
-    }
+    mapBytesOntoCollection(params: MapBytesOntoCollection): Promise<string>;
     /**
      * Samples a uniform random value from the collection using a Contract.Call to the {@link Dice} contract.
      *
@@ -207,13 +113,7 @@ export class Collection {
      * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
      * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
      */
-    async sampleFromCollection(params) {
-        await this.init();
-        return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.sampleFromCollection(this.config.scriptHash, params)],
-            signers: [],
-        });
-    }
+    sampleFromCollection(params: SampleFromCollection): Promise<string>;
     /**
      * Samples uniformly from a collection provided at the time of invocation.  Users have the option to 'pick', which
      * prevents a value from being selected multiple times.  The results are published as outputs on the transaction.
@@ -224,39 +124,16 @@ export class Collection {
      * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
      * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
      */
-    async sampleFromRuntimeCollection(params) {
-        await this.init();
-        return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.sampleFromRuntimeCollection(this.config.scriptHash, params)],
-            signers: [],
-        });
-    }
+    sampleFromRuntimeCollection(params: SampleFromRuntimeCollection): Promise<string>;
     /**
      * Gets the total collections.  Collection IDs are autogenerated on range [1 -> totalCollections] inclusive if you are
      * planning to iterate of their collection IDs.
      * @returns The total number of collections stored in the contract. **OR** a txid if the signer parameter is populated.
      */
-    async totalCollections() {
-        await this.init();
-        const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.totalCollections(this.config.scriptHash)],
-            signers: [],
-        });
-        if (res.stack.length === 0) {
-            throw new Error(res.exception ?? 'unrecognized response');
-        }
-        return this.config.parser.parseRpcResponse(res.stack[0]);
-    }
+    totalCollections(): Promise<any>;
     /**
      * Updates the contract
      * @param params
      */
-    async update(params) {
-        await this.init();
-        return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.update(this.config.scriptHash, params)],
-            signers: [],
-        });
-    }
+    update(params: Update): Promise<string>;
 }
-//# sourceMappingURL=Collection.js.map

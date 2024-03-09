@@ -1,16 +1,19 @@
-import { rpc, sc, u } from '@cityofzion/neon-core';
-import { experimental } from '@cityofzion/neon-js';
-import { NetworkOption } from '../constants/config';
-import { NeonParser } from '@cityofzion/neon-dappkit';
-export class Utils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Utils = void 0;
+const neon_core_1 = require("@cityofzion/neon-core");
+const neon_js_1 = require("@cityofzion/neon-js");
+const config_1 = require("../constants/config");
+const neon_dappkit_1 = require("@cityofzion/neon-dappkit");
+class Utils {
     static async transactionCompletion(txid, opts) {
         let options = {
             period: 1000,
             timeout: 30000,
-            node: NetworkOption.MainNet,
+            node: config_1.NetworkOption.MainNet,
         };
         options = { ...options, ...opts };
-        const client = new rpc.RPCClient(options.node);
+        const client = new neon_core_1.rpc.RPCClient(options.node);
         for (let i = 0; i < Math.floor(options.timeout / options.period); i++) {
             try {
                 // parse the stack
@@ -19,13 +22,13 @@ export class Utils {
                     log,
                     parsedGASConsumption: parseInt(log.executions[0].gasconsumed) / 10 ** 8,
                     parsedStack: log.executions[0].stack.map(stackItem => {
-                        return NeonParser.parseRpcResponse(stackItem);
+                        return neon_dappkit_1.NeonParser.parseRpcResponse(stackItem);
                     }),
                     parsedNotifications: log.executions[0].notifications.map(notificationItem => {
                         return {
                             scriptHash: notificationItem.contract,
                             eventName: notificationItem.eventname,
-                            state: NeonParser.parseRpcResponse(notificationItem.state),
+                            state: neon_dappkit_1.NeonParser.parseRpcResponse(notificationItem.state),
                         };
                     }),
                 };
@@ -65,20 +68,21 @@ export class Utils {
             rpcAddress: node,
             account: signer,
         };
-        const nef = sc.NEF.fromBuffer(nefRaw);
-        const manifest = sc.ContractManifest.fromJson(manifestRaw);
-        const assembledScript = new sc.ScriptBuilder()
-            .emit(sc.OpCode.ABORT)
-            .emitPush(u.HexString.fromHex(signer.scriptHash))
+        const nef = neon_core_1.sc.NEF.fromBuffer(nefRaw);
+        const manifest = neon_core_1.sc.ContractManifest.fromJson(manifestRaw);
+        const assembledScript = new neon_core_1.sc.ScriptBuilder()
+            .emit(neon_core_1.sc.OpCode.ABORT)
+            .emitPush(neon_core_1.u.HexString.fromHex(signer.scriptHash))
             .emitPush(nef.checksum)
             .emitPush(manifest.name)
             .build();
-        const scriptHash = u.reverseHex(u.hash160(assembledScript));
+        const scriptHash = neon_core_1.u.reverseHex(neon_core_1.u.hash160(assembledScript));
         console.log(`deploying ${manifest.name} to 0x${scriptHash} ...`);
-        return experimental.deployContract(nef, manifest, config);
+        return neon_js_1.experimental.deployContract(nef, manifest, config);
     }
     static async sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
+exports.Utils = Utils;
 //# sourceMappingURL=utils.js.map

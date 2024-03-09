@@ -10,7 +10,7 @@ import {
   SampleFromRuntimeCollection,
   Update,
 } from '../types/manifest'
-import {ContractInvocation} from "@cityofzion/neon-dappkit-types";
+import { ContractInvocation } from '@cityofzion/neon-dappkit-types'
 
 export class CollectionAPI {
   static createCollection(scriptHash: string, params: CreateCollection): ContractInvocation {
@@ -36,9 +36,7 @@ export class CollectionAPI {
     return {
       scriptHash,
       operation: 'get_collection_json',
-      args: [
-          { type: 'Integer', value: params.collectionId.toString() }
-      ],
+      args: [{ type: 'Integer', value: params.collectionId.toString() }],
     }
   }
 

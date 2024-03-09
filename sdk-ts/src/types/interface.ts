@@ -1,6 +1,6 @@
-import {NeonInvoker, NeonParser} from "@cityofzion/neon-dappkit";
+import { NeonInvoker, NeonParser } from '@cityofzion/neon-dappkit'
 import { NetworkOption } from '../constants/config'
-import Neon, {rpc} from '@cityofzion/neon-core'
+import Neon, { rpc } from '@cityofzion/neon-core'
 
 export interface ConstructorOptions {
   node?: string

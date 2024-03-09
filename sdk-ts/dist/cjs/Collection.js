@@ -1,11 +1,14 @@
-import { CollectionAPI } from './api';
-import { rpc } from '@cityofzion/neon-core';
-import { NetworkOption } from './constants/config';
-import { NeonInvoker, NeonParser } from '@cityofzion/neon-dappkit';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Collection = void 0;
+const api_1 = require("./api");
+const neon_core_1 = require("@cityofzion/neon-core");
+const config_1 = require("./constants/config");
+const neon_dappkit_1 = require("@cityofzion/neon-dappkit");
 const DEFAULT_OPTIONS = {
-    node: NetworkOption.MainNet,
+    node: config_1.NetworkOption.MainNet,
     scriptHash: '0xf05651bc505fd5c7d36593f6e8409932342f9085',
-    parser: NeonParser,
+    parser: neon_dappkit_1.NeonParser,
     account: undefined,
 };
 /**
@@ -26,7 +29,7 @@ const DEFAULT_OPTIONS = {
  * console.log(total) // outputs the total collection count in the contract
  * ```
  */
-export class Collection {
+class Collection {
     constructor(configOptions = {}) {
         this.initialized = 'invoker' in configOptions;
         this.config = { ...DEFAULT_OPTIONS, ...configOptions };
@@ -43,13 +46,13 @@ export class Collection {
     }
     get node() {
         if (this.config.node) {
-            return new rpc.RPCClient(this.config.node);
+            return new neon_core_1.rpc.RPCClient(this.config.node);
         }
         throw new Error('no node selected!');
     }
     async init() {
         if (!this.initialized) {
-            this.config.invoker = await NeonInvoker.init({
+            this.config.invoker = await neon_dappkit_1.NeonInvoker.init({
                 rpcAddress: this.config.node,
                 account: this.config.account,
             });
@@ -76,7 +79,7 @@ export class Collection {
     async createCollection(params) {
         await this.init();
         return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.createCollection(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.createCollection(this.config.scriptHash, params)],
             signers: [],
         });
     }
@@ -92,7 +95,7 @@ export class Collection {
     async getCollectionJSON(params) {
         await this.init();
         const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollectionJSON(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.getCollectionJSON(this.config.scriptHash, params)],
             signers: [],
         });
         if (res.stack.length === 0) {
@@ -113,7 +116,7 @@ export class Collection {
     async getCollection(params) {
         await this.init();
         const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollection(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.getCollection(this.config.scriptHash, params)],
             signers: [],
         });
         if (res.stack.length === 0) {
@@ -132,7 +135,7 @@ export class Collection {
     async getCollectionElement(params) {
         await this.init();
         const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollectionElement(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.getCollectionElement(this.config.scriptHash, params)],
             signers: [],
         });
         if (res.stack.length === 0) {
@@ -150,7 +153,7 @@ export class Collection {
     async getCollectionLength(params) {
         await this.init();
         const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollectionLength(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.getCollectionLength(this.config.scriptHash, params)],
             signers: [],
         });
         if (res.stack.length === 0) {
@@ -168,7 +171,7 @@ export class Collection {
     async getCollectionValues(params) {
         await this.init();
         const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.getCollectionValues(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.getCollectionValues(this.config.scriptHash, params)],
             signers: [],
         });
         if (res.stack.length === 0) {
@@ -194,7 +197,7 @@ export class Collection {
     async mapBytesOntoCollection(params) {
         await this.init();
         return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.mapBytesOntoCollection(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.mapBytesOntoCollection(this.config.scriptHash, params)],
             signers: [],
         });
     }
@@ -210,7 +213,7 @@ export class Collection {
     async sampleFromCollection(params) {
         await this.init();
         return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.sampleFromCollection(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.sampleFromCollection(this.config.scriptHash, params)],
             signers: [],
         });
     }
@@ -227,7 +230,7 @@ export class Collection {
     async sampleFromRuntimeCollection(params) {
         await this.init();
         return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.sampleFromRuntimeCollection(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.sampleFromRuntimeCollection(this.config.scriptHash, params)],
             signers: [],
         });
     }
@@ -239,7 +242,7 @@ export class Collection {
     async totalCollections() {
         await this.init();
         const res = await this.config.invoker.testInvoke({
-            invocations: [CollectionAPI.totalCollections(this.config.scriptHash)],
+            invocations: [api_1.CollectionAPI.totalCollections(this.config.scriptHash)],
             signers: [],
         });
         if (res.stack.length === 0) {
@@ -254,9 +257,10 @@ export class Collection {
     async update(params) {
         await this.init();
         return await this.config.invoker.invokeFunction({
-            invocations: [CollectionAPI.update(this.config.scriptHash, params)],
+            invocations: [api_1.CollectionAPI.update(this.config.scriptHash, params)],
             signers: [],
         });
     }
 }
+exports.Collection = Collection;
 //# sourceMappingURL=Collection.js.map

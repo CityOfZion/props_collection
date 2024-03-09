@@ -1,9 +1,9 @@
 import { rpc, sc, u, wallet } from '@cityofzion/neon-core'
-import {ParsedLog, pollingOptions} from '../types'
+import { ParsedLog, pollingOptions } from '../types'
 import { experimental } from '@cityofzion/neon-js'
 import { NetworkOption } from '../constants/config'
-import {NeonParser} from "@cityofzion/neon-dappkit";
-import {RpcResponseStackItem} from "@cityofzion/neon-dappkit-types";
+import { NeonParser } from '@cityofzion/neon-dappkit'
+import { RpcResponseStackItem } from '@cityofzion/neon-dappkit-types'
 
 export class Utils {
   static async transactionCompletion(txid: string, opts?: pollingOptions): Promise<ParsedLog> {
@@ -18,23 +18,22 @@ export class Utils {
 
     for (let i = 0; i < Math.floor(options.timeout / options.period); i++) {
       try {
-
-        //parse the stack
+        // parse the stack
         const log = await client.getApplicationLog(txid)
 
         const parsedLog: ParsedLog = {
           log,
-          parsedGASConsumption: parseInt(log.executions[0].gasconsumed) / 10**8,
-          parsedStack: log.executions[0].stack!.map( (stackItem) => {
+          parsedGASConsumption: parseInt(log.executions[0].gasconsumed) / 10 ** 8,
+          parsedStack: log.executions[0].stack!.map(stackItem => {
             return NeonParser.parseRpcResponse(stackItem as RpcResponseStackItem)
           }),
-          parsedNotifications: log.executions[0].notifications!.map( (notificationItem) => {
+          parsedNotifications: log.executions[0].notifications!.map(notificationItem => {
             return {
-              'scriptHash': notificationItem.contract,
-              'eventName': notificationItem.eventname,
-              'state': NeonParser.parseRpcResponse(notificationItem.state as RpcResponseStackItem)
+              scriptHash: notificationItem.contract,
+              eventName: notificationItem.eventname,
+              state: NeonParser.parseRpcResponse(notificationItem.state as RpcResponseStackItem),
             }
-          })
+          }),
         }
         return parsedLog
       } catch (e) {}
@@ -46,7 +45,7 @@ export class Utils {
   static chiSquared(samples: string[]): number {
     const bins = {}
 
-    for (let sample of samples) {
+    for (const sample of samples) {
       // @ts-ignore
       if (bins[sample]) {
         // @ts-ignore
@@ -59,11 +58,11 @@ export class Utils {
 
     // chi-squared test for uniformity
     let chiSquared = 0
-    const expected = samples.length/Object.keys(bins).length
+    const expected = samples.length / Object.keys(bins).length
     const keys: any[] = Object.keys(bins)
-    for (let i = 0; i< keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
       // @ts-ignore
-      chiSquared += ((bins[keys[i]] - expected) ** 2) / expected
+      chiSquared += (bins[keys[i]] - expected) ** 2 / expected
     }
     return chiSquared
   }
