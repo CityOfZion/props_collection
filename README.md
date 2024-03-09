@@ -11,79 +11,217 @@
   <br/> Made with ❤ by <b>COZ.IO</b>
 </p>
 
+# PROPS - Collection Smart Contract and SDK
 
-# Overview
+Props Collection is a smart contract that allows for the creation of collections and the sampling of items from those collections.  This project also includes an off-chain SDK for interfacing with the smart contract.
 
-In an effort to enhance the developer experience of the Neo N3 platform, COZ has developed the PROPS project.  This project is the first of many which
-will significantly improve the ease of use and scalability of both smart contracts and off-chain integrations within our ecosystem.
+This project is part of the PROPS project, a collection of smart contracts and off-chain SDKs that are designed to be used as a reference for developers building on the Neo N3 platform.
 
-The PROPS project has 3 primary goals:
-1. Produce a Smart Contract package ecosystem which provides developers with the tools they need to deliver complex on-chain routines to their users out-of-the-box.
-2. Provide a straight-forward framework/template for new projects to clone and build upon.
-3. Deliver real-world contracts with off-chain integrations for developer reference.
+Visit the [PROPS](https://props.coz.io/d) website for more information.
 
-The PROPS project is ambiguous in scope outside of those goals.
-
-**Fork me for all the tools required to build a dApp**
-
-### contract
-This directory contains the project smart contract.  The directory contains both the
-source ([boa](https://github.com/CityOfZion/neo3-boa)) and compiled version of the contract.
-
-### sdk-*
-In addition to the smart contract, this project includes a complete, well documented SDK which outlines best practices for
-integrating with smart contracts in the Neo N3 ecosystem for off-chain applications.  The SDK includes many design patterns and parsing examples as well as
-a complete integration with the pre-packaged `PROPS` smart contracts.
+The smart-contract was developed with [Neo3-boa](https://github.com/cityofzion/neo3-boa), using Python.
 
 ## Quickstart
 
-### For interfacing off-chain
-```json
+### Smart Contract Quickstart
+
+The following examples are in Python but it can be used with any language that supports the Neo N3 blockchain.
+
+#### Using CPM
+
+Use [CPM]() to install the contract on your local environment. Click [here]((contract/cpm.yaml)) to view a `cpm.yaml` an example.
+
+1. Add the `Dice` and `Collection` contracts to your `cpm.yaml` file:
+
+  ```yaml
+  contracts:
+      - label: PROPS - Dice
+        script-hash: 0x4380f2c1de98bb267d3ea821897ec571a04fe3e0
+        source-network: mainnet
+        generate-sdk: true
+        download: true
+      - label: PROPS - Collection
+        script-hash: 0xf05651bc505fd5c7d36593f6e8409932342f9085
+        source-network: mainnet
+        generate-sdk: true
+        download: true
+  ```
+
+2. Use `cpm run` to download and install the contract.
+
+3. Import the `Collection` interface from the CPM output directory:
+
+```python
+from cpm_out.collection.contract import Collection
+```
+
+4. Use the `Collection` class to interact with the smart contract.
+
+```python
+# Create a Collection
+collection_id = Collection.create_collection("My Collection", "This is a collection of items", ["Item 1", "Item 2", "Item 3"])
+
+# Add an item to the collection
+Collection.add_item("My Collection", "Item 4")
+
+# Sample an item from the collection
+item = Collection.sample_from_collection("My Collection")
+```
+
+#### Using `Call Contract`
+
+Alternatively, use the `Call Contract` interop to interact with the collection smart contract.
+
+```python
+
+from boa3.builtin.interop.contract import call_contract
+
+# Collection Contract ScriptHash
+collection_hash = "0xf05651bc505fd5c7d36593f6e8409932342f9085"
+
+# Create a Collection
+collection_id = call_contract(collection_hash, 'create_collection', ["My Collection", "This is a collection of items"])
+
+# Add an item to the collection
+call_contract(collection_hash, 'add_item', ["My Collection", "Item 1"])
+```
+
+### Collection Contract Hashes
+
+The props collection contract can be found on the Neo N3 network at the following addresses:
+
+- Mainnet: `0xf05651bc505fd5c7d36593f6e8409932342f9085`
+- Testnet: `0xf05651bc505fd5c7d36593f6e8409932342f9085`
+
+[View on Dora](https://dora.coz.io/contract/0xf05651bc505fd5c7d36593f6e8409932342f9085)
+
+### SDK Quickstart
+
+The SDK is available as an NPM package.  To install the package, run the following command:
+
+```bash
 npm install @cityofzion/props-collection
 ```
 
-**To get a Collection**
-```ts
-import { Collection } from '@cityofzion/props-collection'
+Basic usage of the SDK is as follows:
 
-const collection = new Collection()
-
-const collectionJSON = await collection.getCollectionJSON({
-    collectionId: 1
-})
-console.log(collectionJSON)
-```
-
-**To sample from a Collection**
 ```ts
 import { Collection, Utils } from '@cityofzion/props-collection'
 
+// Create an instance of the Collection class
 const collection = new Collection({
-    account: new Neon.wallet.Account('{{YOUR_WIF}}')
+    account: new Neon.wallet.Account('{{YOUR_WIF}}') // Optional
 })
 
-const txid = await collection.sampleFromCollection({
+// Create a collection
+const collectionId = await collection.createCollection({
+    name: "My Collection",
+    description: "This is a collection of items",
+    items: ["Item 1", "Item 2", "Item 3"]
+}).AwaitResult()
+
+// Add an item to the collection
+await collection.addItem({
     collectionId: 1
-})
-const result = await Utils.transactionCompletion(txid)
+    item: "Item 4"
+}).AwaitResult()
+
+// Sample an item from the collection
+await item = collection.sampleFromCollection({
+    collectionId: 1
+}).AwaitResult()
+
+// Get a Collection
+const collectionJson = collection.getCollectionJson({
+    collectionId: 1
+}).AwaitResult()
+
 ```
 
 For more examples, refer to the tests directory.
 
-### For Interfacing On-Chain
-Add the collections contract to your cpm.yaml file:
-```
-cpm download contract -c 0xf05651bc505fd5c7d36593f6e8409932342f9085 -n mainnet -s
-cpm run
-```
-**To get a collection**
-```python
-from cpm_out.collection.contract import Collection
-collection = Collection.get_collection_json(1)
+## Manually Deploying and Updating the Collection Smart Contract
+
+Use the following steps to manually deploy and update the collection smart contract.
+
+Deployment Example:
+
+1. Install `neon-js` using NPM:
+  
+  ```bash
+  npm install @cityofzion/neon-js
+  ```
+
+2. (Optional) Recompile the smart contract using the `neo3-boa` to generate the NEF and Manifest files:
+
+  ```bash
+  neo3-boa compile collection.py
+  ```
+  
+If you are using CPM, you can use the `.nef` and `.manifest.json` files from the CPM output directory.
+
+3. Use the following code to deploy the collection smart contract:
+
+```ts
+import { wallet } from '@cityofzion/neon-js'
+import { NeonParser, NeonInvoker } from "@cityofzion/neon-dappkit";
+
+
+account = new wallet.Account("{{YOUR_WIF}}");
+
+const rpcAddress = "https://testnet1.neo.coz.io:443";
+const invoker = await NeonInvoker.init({ rpcAddress, account });
+
+// Replace the following with the path to the NEF and Manifest files
+const nef = fs.readFileSync('collection.nef');
+const manifest = fs.readFileSync('collection.manifest.json');
+
+const args = [
+    NeonParser.formatRpcArgument(nef, { type: 'ByteArray' }),
+    NeonParser.formatRpcArgument(manifest, { type: 'String' })
+];
+
+const resp = await invoker.invokeFunction({
+    invocations: [{
+        scriptHash: '0xfffdc93764dbaddd97c48f252a53ea4643faa3fd',
+        operation: 'deploy',
+        args
+    }],
+});
 ```
 
-**To sample from a collection**
-```python
-from cpm_out.collection.contract import Collection
-sample = Collection.sample_from_collection(1)
+To update the collection smart contract, use the following code:
+
+```ts
+import { wallet } from '@cityofzion/neon-js'
+import { NeonParser, NeonInvoker } from "@cityofzion/neon-dappkit";
+
+
+account = new wallet.Account("{{YOUR_WIF}}");
+
+const rpcAddress = "https://testnet1.neo.coz.io:443";
+const invoker = await NeonInvoker.init({ rpcAddress, account });
+
+// Replace the following with the path to the NEF and Manifest files
+const nef = fs.readFileSync('collection.nef');
+const manifest = fs.readFileSync('collection.manifest.json');
+
+const args = [
+    NeonParser.formatRpcArgument(nef, { type: 'ByteArray' }),
+    NeonParser.formatRpcArgument(manifest, { type: 'ByteArray' })
+];
+
+const resp = await invoker.invokeFunction({
+    invocations: [{
+        scriptHash: '<Existing Contract Script Hash>',
+        operation: 'update',
+        args
+    }],
+});
 ```
+
+[Use Dora](https://dora.coz.io/contracts/) to find your existing deployed contract script hash.
+
+## Support
+
+If you encounter problems using the collection smart contract or the SDK, please open an issue on this repository or request help on the [COZ Discord](https://discord.gg/BB8zUApu).

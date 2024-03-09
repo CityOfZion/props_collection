@@ -9,12 +9,12 @@ defaults:
         destinations:
             python: cpm_out
 contracts:
-    - label: Props - dice
+    - label: PROPS - Dice
       script-hash: 0x4380f2c1de98bb267d3ea821897ec571a04fe3e0
       source-network: mainnet
       generate-sdk: true
       download: true
-    - label: Props - collection
+    - label: PROPS - collection
       script-hash: 0xf05651bc505fd5c7d36593f6e8409932342f9085
       source-network: mainnet
       generate-sdk: true
