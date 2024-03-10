@@ -1,6 +1,6 @@
 {
   "name": "@cityofzion/props-collection",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A contract for storing and retrieving arrays of data",
   "main": "./dist/cjs/index.js",
   "type": "module",
