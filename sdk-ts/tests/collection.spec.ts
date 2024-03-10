@@ -3099,6 +3099,5 @@ function generateName() {
     'Tom',
     'Lieuwe',
   ]
-  const name = capFirst(name1[getRandomInt(0, name1.length)]) + ' ' + capFirst(name2[getRandomInt(0, name2.length)])
-  return name
+  return capFirst(name1[getRandomInt(0, name1.length)]) + ' ' + capFirst(name2[getRandomInt(0, name2.length)])
 }
