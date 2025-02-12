@@ -19,3 +19,6 @@ export declare type ParsedLog = {
     parsedNotifications: any;
     parsedGASConsumption: any;
 };
+export interface InvocationOptions {
+    synchronous: boolean;
+}

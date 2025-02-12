@@ -15,9 +15,40 @@ describe('Basic Collection Test Suite', function () {
     })
   })
 
+  it('should synchronously create a collection', async () => {
+    const collectionLength = 100
+    const values: string[] = []
+    for (let i = 0; i < collectionLength; i++) {
+      values.push(generateName())
+    }
+
+    const collectionId = await collection.createCollection(
+      {
+        description: 'a collection with 100 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      },
+      { synchronous: true }
+    )
+
+    const cLength = await collection.getCollectionLength({
+      collectionId,
+    })
+    assert.equal(collectionLength, cLength)
+
+    const res2 = await collection.getCollectionJSON({
+      collectionId,
+    })
+
+    values.forEach((val: any, i: number) => {
+      assert(val === res2.values[i])
+    })
+  })
+
   it('should create a very large collection', async () => {
     const collectionLength = 2000
-    const values = []
+    const values: string[] = []
     for (let i = 0; i < collectionLength; i++) {
       values.push(generateName())
     }
@@ -47,7 +78,7 @@ describe('Basic Collection Test Suite', function () {
   })
 
   it('should pop values from a very large collection', async () => {
-    const values = []
+    const values: string[] = []
     for (let i = 0; i < 500; i++) {
       values.push(generateName())
     }
@@ -197,7 +228,7 @@ describe('Basic Collection Test Suite', function () {
   it('should pick 9 of the 10 samples multiple times without repeating', async () => {
     const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
-    const txids = []
+    const txids: string[] = []
     for (let i = 0; i < 20; i++) {
       const txid = await collection.sampleFromRuntimeCollection({
         values,
@@ -234,6 +265,86 @@ describe('Basic Collection Test Suite', function () {
       })
       assert.fail('this tx should fail due to sample length')
     } catch (e) {}
+  })
+
+  it('should get a value from the collection based on entropy', async () => {
+    const collectionLength = 100
+    const values: string[] = []
+    for (let i = 0; i < collectionLength; i++) {
+      values.push(generateName())
+    }
+
+    const collectionId = await collection.createCollection(
+      {
+        description: 'a collection with 100 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      },
+      { synchronous: true }
+    )
+
+    const collectionValueSync = await collection.mapBytesOntoCollection(
+      {
+        collectionId,
+        entropy: '1',
+      },
+      { synchronous: true }
+    )
+    const txId = await collection.mapBytesOntoCollection({
+      collectionId,
+      entropy: '1',
+    })
+
+    const collectionValueAsync = (
+      await Utils.transactionCompletion(txId, {
+        node: NetworkOption.LocalNet,
+      })
+    ).parsedStack[0]
+
+    assert.deepEqual(collectionValueSync, collectionValueAsync)
+  })
+
+  it('should synchronously sample from the range of values in a collection', async () => {
+    const collectionLength = 100
+
+    const values: string[] = []
+    for (let i = 0; i < collectionLength; i++) {
+      values.push(generateName())
+    }
+
+    const collectionId = await collection.createCollection(
+      {
+        description: 'a collection with 100 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      },
+      { synchronous: true }
+    )
+    const samples = await collection.sampleFromCollection(
+      {
+        collectionId,
+        samples: 10,
+      },
+      { synchronous: true }
+    )
+
+    assert.includeMembers(values, samples)
+  })
+
+  it('should synchronously sample from a runtime sample', async () => {
+    const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+    const samples = await collection.sampleFromRuntimeCollection(
+      {
+        values,
+        samples: 10,
+        pick: false,
+      },
+      { synchronous: true }
+    )
+
+    assert.includeMembers(values, samples)
   })
 })
 

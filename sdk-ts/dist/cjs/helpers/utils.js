@@ -42,13 +42,10 @@ class Utils {
     static chiSquared(samples) {
         const bins = {};
         for (const sample of samples) {
-            // @ts-ignore
             if (bins[sample]) {
-                // @ts-ignore
                 bins[sample] += 1;
             }
             else {
-                // @ts-ignore
                 bins[sample] = 1;
             }
         }
@@ -57,7 +54,6 @@ class Utils {
         const expected = samples.length / Object.keys(bins).length;
         const keys = Object.keys(bins);
         for (let i = 0; i < keys.length; i++) {
-            // @ts-ignore
             chiSquared += (bins[keys[i]] - expected) ** 2 / expected;
         }
         return chiSquared;
