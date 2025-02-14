@@ -256,10 +256,13 @@ export class Collection {
    * @returns A transaction ID or a collection value. This result uses RNG features managed by the consensus nodes and only functions properly
    * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
    */
+  async mapBytesOntoCollection(params: MapBytesOntoCollection): Promise<string>
+  async mapBytesOntoCollection(params: MapBytesOntoCollection, opts: { synchronous: false }): Promise<string>
+  async mapBytesOntoCollection(params: MapBytesOntoCollection, opts: { synchronous: true }): Promise<any>
   async mapBytesOntoCollection(
     params: MapBytesOntoCollection,
     opts: InvocationOptions = { synchronous: false }
-  ): Promise<string> {
+  ): Promise<string | any> {
     await this.init()
     const txId = await this.config.invoker!.invokeFunction({
       invocations: [CollectionAPI.mapBytesOntoCollection(this.config.scriptHash!, params)],
@@ -292,11 +295,11 @@ export class Collection {
    */
   async sampleFromCollection(params: SampleFromCollection): Promise<string>
   async sampleFromCollection(params: SampleFromCollection, opts: { synchronous: false }): Promise<string>
-  async sampleFromCollection(params: SampleFromCollection, opts: { synchronous: true }): Promise<string[]>
+  async sampleFromCollection(params: SampleFromCollection, opts: { synchronous: true }): Promise<any[]>
   async sampleFromCollection(
     params: SampleFromCollection,
     opts: InvocationOptions = { synchronous: false }
-  ): Promise<string | string[]> {
+  ): Promise<string | any[]> {
     await this.init()
     const txId = await this.config.invoker!.invokeFunction({
       invocations: [CollectionAPI.sampleFromCollection(this.config.scriptHash!, params)],
@@ -312,7 +315,7 @@ export class Collection {
       node: this.config.node as NetworkOption,
     })
 
-    return resp.parsedStack[0] as string[]
+    return resp.parsedStack[0]
   }
 
   /**
@@ -330,11 +333,11 @@ export class Collection {
    */
   async sampleFromRuntimeCollection(params: SampleFromRuntimeCollection): Promise<string>
   async sampleFromRuntimeCollection(params: SampleFromRuntimeCollection, opts: { synchronous: false }): Promise<string>
-  async sampleFromRuntimeCollection(params: SampleFromRuntimeCollection, opts: { synchronous: true }): Promise<string[]>
+  async sampleFromRuntimeCollection(params: SampleFromRuntimeCollection, opts: { synchronous: true }): Promise<any[]>
   async sampleFromRuntimeCollection(
     params: SampleFromRuntimeCollection,
     opts: InvocationOptions = { synchronous: false }
-  ): Promise<string | string[]> {
+  ): Promise<string | any[]> {
     await this.init()
     const txId = await this.config.invoker!.invokeFunction({
       invocations: [CollectionAPI.sampleFromRuntimeCollection(this.config.scriptHash!, params)],
@@ -350,7 +353,7 @@ export class Collection {
       node: this.config.node as NetworkOption,
     })
 
-    return resp.parsedStack[0] as string[]
+    return resp.parsedStack[0]
   }
 
   /**

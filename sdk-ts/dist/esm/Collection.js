@@ -170,24 +170,6 @@ export class Collection {
         }
         return this.config.parser.parseRpcResponse(res.stack[0]);
     }
-    /**
-     * Maps byte entropy onto a collection's values and returns the index of the result.  The mapping is made as follows:
-     *
-     * [0 -> MAX(entropyBytes.length)][entropy] -> [0 -> collection.length][index]
-     *
-     * This method is primarily useful for computationally efficient contract interfacing. For random sampling, or
-     * sampling from a distribution, use {@link getCollectionLength} in combination with {@link getCollectionElement} or
-     * {@link sampleFromCollection}.
-     *
-     * @param params.collectionId The collectionID being requested.  Refer to {@link https://props.coz.io} for a formatted list.
-     * @param params.entropy Bytes to use for the mapping.
-     * @param {InvocationOptions} [opts]
-     * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
-     * the response, or to just return the transaction ID.
-     *
-     * @returns A transaction ID or a collection value. This result uses RNG features managed by the consensus nodes and only functions properly
-     * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
-     */
     async mapBytesOntoCollection(params, opts = { synchronous: false }) {
         await this.init();
         const txId = await this.config.invoker.invokeFunction({
