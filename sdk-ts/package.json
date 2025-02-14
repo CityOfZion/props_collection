@@ -15,7 +15,7 @@
     "access": "public"
   },
   "scripts": {
-    "tsc": "npm run clean && npm run lint && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "tsc": "npm run clean && npm run lint && tsc -p tsconfig.build.json && tsc -p tsconfig-cjs.json",
     "prepublishOnly": "npm run tsc",
     "clean": "rm -rf ./dist",
     "lint": "eslint --fix .",
@@ -31,8 +31,7 @@
   "dependencies": {
     "@cityofzion/neon-dappkit": "^0.4.0",
     "@cityofzion/neon-dappkit-types": "^0.3.1",
-    "@cityofzion/neon-js": "^5.3.0",
-    "@cityofzion/neon-core": "^5.0.0-next.16",
+    "@cityofzion/neon-js": "^5.7.0",
     "@types/lodash": "^4.14.176",
     "@types/node": "^16.11.11",
     "save": "^2.9.0"
@@ -42,6 +41,7 @@
     "@types/expect": "^24.3.0",
     "@types/mocha": "^9.1.1",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@cityofzion/neon-core": "^5.7.0",
     "assert": "^2.0.0",
     "chai": "^4.3.6",
     "cross-env": "^7.0.3",

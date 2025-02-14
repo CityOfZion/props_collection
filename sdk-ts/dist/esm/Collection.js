@@ -1,5 +1,5 @@
 import { CollectionAPI } from './api';
-import { rpc } from '@cityofzion/neon-core';
+import { rpc } from '@cityofzion/neon-js';
 import { NetworkOption } from './constants/config';
 import { NeonInvoker, NeonParser } from '@cityofzion/neon-dappkit';
 import { Utils } from './helpers';

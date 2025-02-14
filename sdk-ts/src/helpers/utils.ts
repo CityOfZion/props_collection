@@ -1,6 +1,6 @@
-import { rpc, sc, u, wallet } from '@cityofzion/neon-core'
+import { rpc, sc, u, experimental } from '@cityofzion/neon-js'
+import { wallet as walletCore } from '@cityofzion/neon-core'
 import { ParsedLog, pollingOptions } from '../types'
-import { experimental } from '@cityofzion/neon-js'
 import { NetworkOption } from '../constants/config'
 import { NeonParser } from '@cityofzion/neon-dappkit'
 import { RpcResponseStackItem } from '@cityofzion/neon-dappkit-types'
@@ -68,7 +68,7 @@ export class Utils {
     networkMagic: number,
     nefRaw: Buffer,
     manifestRaw: any,
-    signer: wallet.Account
+    signer: walletCore.Account
   ): Promise<string> {
     const config = {
       networkMagic,

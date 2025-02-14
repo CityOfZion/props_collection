@@ -1,6 +1,7 @@
 import { CollectionAPI } from './api'
 import { ConstructorOptions, InvocationOptions } from './types'
-import { rpc } from '@cityofzion/neon-core'
+import { rpc } from '@cityofzion/neon-js'
+import { rpc as coreRpc } from '@cityofzion/neon-core'
 import { NetworkOption } from './constants/config'
 import { NeonInvoker, NeonParser } from '@cityofzion/neon-dappkit'
 import {
@@ -64,7 +65,7 @@ export class Collection {
     throw new Error('no scripthash defined')
   }
 
-  get node(): rpc.RPCClient {
+  get node(): coreRpc.RPCClient {
     if (this.config.node) {
       return new rpc.RPCClient(this.config.node!)
     }

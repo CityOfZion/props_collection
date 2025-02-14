@@ -1,5 +1,4 @@
-import { rpc, sc, u } from '@cityofzion/neon-core';
-import { experimental } from '@cityofzion/neon-js';
+import { rpc, sc, u, experimental } from '@cityofzion/neon-js';
 import { NetworkOption } from '../constants/config';
 import { NeonParser } from '@cityofzion/neon-dappkit';
 export class Utils {
