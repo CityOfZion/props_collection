@@ -2,12 +2,14 @@ import { CollectionAPI } from './api';
 import { rpc } from '@cityofzion/neon-core';
 import { NetworkOption } from './constants/config';
 import { NeonInvoker, NeonParser } from '@cityofzion/neon-dappkit';
+import { Utils } from './helpers';
 const DEFAULT_OPTIONS = {
     node: NetworkOption.MainNet,
     scriptHash: '0xf05651bc505fd5c7d36593f6e8409932342f9085',
     parser: NeonParser,
     account: undefined,
 };
+const TIMEOUT = 60000;
 /**
  * The Collection prop is designed to store static-immutable data for reference in other projects. Storing static data
  * in contracts is very expensive and inefficient, especially for new projects.  This contract resolves that issue by creating
@@ -57,28 +59,20 @@ export class Collection {
         }
         return true;
     }
-    /// ///////////////////////////////////////////////////
-    /// ///////////////////////////////////////////////////
-    /// /////////////CONTRACT METHODS//////////////////////
-    /// ///////////////////////////////////////////////////
-    /// ///////////////////////////////////////////////////
-    /**
-     * Publishes an array of immutable data to the smart contract along with some useful metadata.
-     *
-     * @param params.description A useful description of the collection.
-     * @param params.collectionType The type of the data being store.  This is an unregulated field.  Standard NVM datatypes should
-     * adhere to existing naming conventions.
-     * @param params.extra An unregulated field for unplanned feature development.
-     * @param params.values An array of values that represent the body of the collection.
-     *
-     * @returns A transaction ID.  Refer to {@link Util.transactionCompletion} for parsing the response.
-     */
-    async createCollection(params) {
+    async createCollection(params, opts = { synchronous: false }) {
         await this.init();
-        return await this.config.invoker.invokeFunction({
+        const txId = await this.config.invoker.invokeFunction({
             invocations: [CollectionAPI.createCollection(this.config.scriptHash, params)],
             signers: [],
         });
+        if (!opts.synchronous) {
+            return txId;
+        }
+        const resp = await Utils.transactionCompletion(txId, {
+            timeout: TIMEOUT,
+            node: this.config.node,
+        });
+        return resp.parsedStack[0];
     }
     /**
      * Gets a JSON formatting collection from the smart contract.
@@ -176,60 +170,50 @@ export class Collection {
         }
         return this.config.parser.parseRpcResponse(res.stack[0]);
     }
-    /**
-     * Maps byte entropy onto a collection's values and returns the index of the result.  The mapping is made as follows:
-     *
-     * [0 -> MAX(entropyBytes.length)][entropy] -> [0 -> collection.length][index]
-     *
-     * This method is primarily useful for computationally efficient contract interfacing. For random sampling, or
-     * sampling from a distribution, use {@link getCollectionLength} in combination with {@link getCollectionElement} or
-     * {@link sampleFromCollection}.
-     *
-     * @param params.collectionId The collectionID being requested.  Refer to {@link https://props.coz.io} for a formatted list.
-     * @param params.entropy Bytes to use for the mapping.
-     *
-     * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
-     * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
-     */
-    async mapBytesOntoCollection(params) {
+    async mapBytesOntoCollection(params, opts = { synchronous: false }) {
         await this.init();
-        return await this.config.invoker.invokeFunction({
+        const txId = await this.config.invoker.invokeFunction({
             invocations: [CollectionAPI.mapBytesOntoCollection(this.config.scriptHash, params)],
             signers: [],
         });
+        if (!opts.synchronous) {
+            return txId;
+        }
+        const resp = await Utils.transactionCompletion(txId, {
+            timeout: TIMEOUT,
+            node: this.config.node,
+        });
+        return resp.parsedStack[0];
     }
-    /**
-     * Samples a uniform random value from the collection using a Contract.Call to the {@link Dice} contract.
-     *
-     * @param params.collectionId The collectionID being requested.  Refer to {@link https://props.coz.io} for a formatted list.
-     * @param params.samples The number of samples to return
-     *
-     * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
-     * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
-     */
-    async sampleFromCollection(params) {
+    async sampleFromCollection(params, opts = { synchronous: false }) {
         await this.init();
-        return await this.config.invoker.invokeFunction({
+        const txId = await this.config.invoker.invokeFunction({
             invocations: [CollectionAPI.sampleFromCollection(this.config.scriptHash, params)],
             signers: [],
         });
+        if (!opts.synchronous) {
+            return txId;
+        }
+        const resp = await Utils.transactionCompletion(txId, {
+            timeout: TIMEOUT,
+            node: this.config.node,
+        });
+        return resp.parsedStack[0];
     }
-    /**
-     * Samples uniformly from a collection provided at the time of invocation.  Users have the option to 'pick', which
-     * prevents a value from being selected multiple times.  The results are published as outputs on the transaction.
-     * @param params.values an array of values to sample from
-     * @param params.samples the number of samples to fairly select from the values
-     * @param params.pick Are selected values removed from the list of options for future samples?
-     *
-     * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
-     * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
-     */
-    async sampleFromRuntimeCollection(params) {
+    async sampleFromRuntimeCollection(params, opts = { synchronous: false }) {
         await this.init();
-        return await this.config.invoker.invokeFunction({
+        const txId = await this.config.invoker.invokeFunction({
             invocations: [CollectionAPI.sampleFromRuntimeCollection(this.config.scriptHash, params)],
             signers: [],
         });
+        if (!opts.synchronous) {
+            return txId;
+        }
+        const resp = await Utils.transactionCompletion(txId, {
+            timeout: TIMEOUT,
+            node: this.config.node,
+        });
+        return resp.parsedStack[0];
     }
     /**
      * Gets the total collections.  Collection IDs are autogenerated on range [1 -> totalCollections] inclusive if you are
@@ -247,15 +231,18 @@ export class Collection {
         }
         return this.config.parser.parseRpcResponse(res.stack[0]);
     }
-    /**
-     * Updates the contract
-     * @param params
-     */
-    async update(params) {
+    async update(params, opts = { synchronous: false }) {
         await this.init();
-        return await this.config.invoker.invokeFunction({
+        const txId = await this.config.invoker.invokeFunction({
             invocations: [CollectionAPI.update(this.config.scriptHash, params)],
             signers: [],
+        });
+        if (!opts.synchronous) {
+            return txId;
+        }
+        await Utils.transactionCompletion(txId, {
+            timeout: TIMEOUT,
+            node: this.config.node,
         });
     }
 }

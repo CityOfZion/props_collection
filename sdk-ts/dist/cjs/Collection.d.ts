@@ -38,10 +38,19 @@ export declare class Collection {
      * adhere to existing naming conventions.
      * @param params.extra An unregulated field for unplanned feature development.
      * @param params.values An array of values that represent the body of the collection.
+     * @param {InvocationOptions} [opts]
+     * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
+     * the response, or to just return the transaction ID.
      *
-     * @returns A transaction ID.  Refer to {@link Util.transactionCompletion} for parsing the response.
+     * @returns A transaction ID or the new collection ID.  Refer to {@link Util.transactionCompletion} for parsing the response.
      */
     createCollection(params: CreateCollection): Promise<string>;
+    createCollection(params: CreateCollection, opts: {
+        synchronous: false;
+    }): Promise<string>;
+    createCollection(params: CreateCollection, opts: {
+        synchronous: true;
+    }): Promise<number>;
     /**
      * Gets a JSON formatting collection from the smart contract.
      *
@@ -99,32 +108,59 @@ export declare class Collection {
      *
      * @param params.collectionId The collectionID being requested.  Refer to {@link https://props.coz.io} for a formatted list.
      * @param params.entropy Bytes to use for the mapping.
+     * @param {InvocationOptions} [opts]
+     * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
+     * the response, or to just return the transaction ID.
      *
-     * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
+     * @returns A transaction ID or a collection value. This result uses RNG features managed by the consensus nodes and only functions properly
      * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
      */
     mapBytesOntoCollection(params: MapBytesOntoCollection): Promise<string>;
+    mapBytesOntoCollection(params: MapBytesOntoCollection, opts: {
+        synchronous: false;
+    }): Promise<string>;
+    mapBytesOntoCollection(params: MapBytesOntoCollection, opts: {
+        synchronous: true;
+    }): Promise<any>;
     /**
      * Samples a uniform random value from the collection using a Contract.Call to the {@link Dice} contract.
      *
      * @param params.collectionId The collectionID being requested.  Refer to {@link https://props.coz.io} for a formatted list.
      * @param params.samples The number of samples to return
+     * @param {InvocationOptions} [opts]
+     * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
+     * the response, or to just return the transaction ID.
      *
-     * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
+     * @returns A transaction ID or a list of values. This result uses RNG features managed by the consensus nodes and only functions properly
      * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
      */
     sampleFromCollection(params: SampleFromCollection): Promise<string>;
+    sampleFromCollection(params: SampleFromCollection, opts: {
+        synchronous: false;
+    }): Promise<string>;
+    sampleFromCollection(params: SampleFromCollection, opts: {
+        synchronous: true;
+    }): Promise<any[]>;
     /**
      * Samples uniformly from a collection provided at the time of invocation.  Users have the option to 'pick', which
      * prevents a value from being selected multiple times.  The results are published as outputs on the transaction.
      * @param params.values an array of values to sample from
      * @param params.samples the number of samples to fairly select from the values
      * @param params.pick Are selected values removed from the list of options for future samples?
+     * @param {InvocationOptions} [opts]
+     * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
+     * the response, or to just return the transaction ID.
      *
-     * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
+     * @returns A transaction ID or a list of values. This result uses RNG features managed by the consensus nodes and only functions properly
      * with a published transaction. Refer to {@link Util.transactionCompletion} for parsing the response.
      */
     sampleFromRuntimeCollection(params: SampleFromRuntimeCollection): Promise<string>;
+    sampleFromRuntimeCollection(params: SampleFromRuntimeCollection, opts: {
+        synchronous: false;
+    }): Promise<string>;
+    sampleFromRuntimeCollection(params: SampleFromRuntimeCollection, opts: {
+        synchronous: true;
+    }): Promise<any[]>;
     /**
      * Gets the total collections.  Collection IDs are autogenerated on range [1 -> totalCollections] inclusive if you are
      * planning to iterate of their collection IDs.
@@ -134,6 +170,15 @@ export declare class Collection {
     /**
      * Updates the contract
      * @param params
+     * @param {InvocationOptions} [opts]
+     * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
+     * the response, or to just return the transaction ID.
      */
     update(params: Update): Promise<string>;
+    update(params: Update, opts: {
+        synchronous: false;
+    }): Promise<string>;
+    update(params: Update, opts: {
+        synchronous: true;
+    }): Promise<void>;
 }
