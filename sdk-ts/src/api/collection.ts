@@ -71,7 +71,7 @@ export class CollectionAPI {
     return {
       scriptHash,
       operation: 'get_collection_values',
-      args: [{ type: 'Integer', value: params.collection_id.toString() }],
+      args: [{ type: 'Integer', value: params.collectionId.toString() }],
     }
   }
 

@@ -73,7 +73,31 @@
     "./dist/"
   ],
   "typedocOptions": {
-    "entryPoints": ["./src/index.ts"],
-    "out": "docs"
+    // "entryPoints": ["./src/index.ts"],
+    "entryPoints": ["./src/",],
+    "out": "docs",
+    "highlightLanguages": [
+      // Default languages
+      "bash",
+      "console",
+      "css",
+      "html",
+      "javascript",
+      "json",
+      "jsonc",
+      "json5",
+      "tsx",
+      "typescript",
+      // Expanded languages
+      "python"
+    ],
+    "customJs": "./theme/typedoc.js",
+    "navigation": {
+      "includeCategories": true,
+      "includeGroups": true,
+      "includeFolders": true,
+      "compactFolders": false,
+      "excludeReferences": true
+    },
   }
 }
