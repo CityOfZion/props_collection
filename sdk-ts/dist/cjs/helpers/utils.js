@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Utils = void 0;
-const neon_core_1 = require("@cityofzion/neon-core");
 const neon_js_1 = require("@cityofzion/neon-js");
 const config_1 = require("../constants/config");
 const neon_dappkit_1 = require("@cityofzion/neon-dappkit");
@@ -13,7 +12,7 @@ class Utils {
             node: config_1.NetworkOption.MainNet,
         };
         options = { ...options, ...opts };
-        const client = new neon_core_1.rpc.RPCClient(options.node);
+        const client = new neon_js_1.rpc.RPCClient(options.node);
         for (let i = 0; i < Math.floor(options.timeout / options.period); i++) {
             try {
                 // parse the stack
@@ -64,15 +63,15 @@ class Utils {
             rpcAddress: node,
             account: signer,
         };
-        const nef = neon_core_1.sc.NEF.fromBuffer(nefRaw);
-        const manifest = neon_core_1.sc.ContractManifest.fromJson(manifestRaw);
-        const assembledScript = new neon_core_1.sc.ScriptBuilder()
-            .emit(neon_core_1.sc.OpCode.ABORT)
-            .emitPush(neon_core_1.u.HexString.fromHex(signer.scriptHash))
+        const nef = neon_js_1.sc.NEF.fromBuffer(nefRaw);
+        const manifest = neon_js_1.sc.ContractManifest.fromJson(manifestRaw);
+        const assembledScript = new neon_js_1.sc.ScriptBuilder()
+            .emit(neon_js_1.sc.OpCode.ABORT)
+            .emitPush(neon_js_1.u.HexString.fromHex(signer.scriptHash))
             .emitPush(nef.checksum)
             .emitPush(manifest.name)
             .build();
-        const scriptHash = neon_core_1.u.reverseHex(neon_core_1.u.hash160(assembledScript));
+        const scriptHash = neon_js_1.u.reverseHex(neon_js_1.u.hash160(assembledScript));
         console.log(`deploying ${manifest.name} to 0x${scriptHash} ...`);
         return neon_js_1.experimental.deployContract(nef, manifest, config);
     }

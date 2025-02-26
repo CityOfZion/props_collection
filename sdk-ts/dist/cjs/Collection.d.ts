@@ -1,5 +1,5 @@
 import { ConstructorOptions } from './types';
-import { rpc } from '@cityofzion/neon-core';
+import { rpc as coreRpc } from '@cityofzion/neon-core';
 import { CreateCollection, GetCollection, GetCollectionElement, GetCollectionJSON, GetCollectionLength, GetCollectionValues, MapBytesOntoCollection, SampleFromCollection, SampleFromRuntimeCollection, Update } from './types/manifest';
 /**
  * The Collection prop is designed to store static-immutable data for reference in other projects. Storing static data
@@ -28,7 +28,7 @@ export declare class Collection {
      * The contract script hash that is being interfaced with.
      */
     get scriptHash(): string;
-    get node(): rpc.RPCClient;
+    get node(): coreRpc.RPCClient;
     init(): Promise<boolean>;
     /**
      * Publishes an array of immutable data to the smart contract along with some useful metadata.

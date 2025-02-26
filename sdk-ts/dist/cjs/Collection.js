@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Collection = void 0;
 const api_1 = require("./api");
-const neon_core_1 = require("@cityofzion/neon-core");
+const neon_js_1 = require("@cityofzion/neon-js");
 const config_1 = require("./constants/config");
 const neon_dappkit_1 = require("@cityofzion/neon-dappkit");
 const helpers_1 = require("./helpers");
@@ -48,7 +48,7 @@ class Collection {
     }
     get node() {
         if (this.config.node) {
-            return new neon_core_1.rpc.RPCClient(this.config.node);
+            return new neon_js_1.rpc.RPCClient(this.config.node);
         }
         throw new Error('no node selected!');
     }

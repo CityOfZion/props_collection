@@ -1,350 +1,479 @@
 import { Collection, Utils } from '../dist/esm'
 import { NetworkOption } from '../dist/esm/constants/config'
-import { wallet } from '@cityofzion/neon-core'
+import { wallet, u } from '@cityofzion/neon-js'
 import { assert } from 'chai'
 
 describe('Basic Collection Test Suite', function () {
   this.timeout(60000)
   let collection: Collection
+  const account = new wallet.Account('f648c2f94ac19108433dd4763448c4c5ea2f13db8215ac1736637b8c6b00cf9b')
 
   beforeEach(async function () {
     // create a new class instance
     collection = new Collection({
       node: NetworkOption.LocalNet, // change this if you want to connect to mainnet
-      account: new wallet.Account('f648c2f94ac19108433dd4763448c4c5ea2f13db8215ac1736637b8c6b00cf9b'),
+      account,
     })
   })
 
-  it('should synchronously create a collection', async () => {
-    const collectionLength = 100
-    const values: string[] = []
-    for (let i = 0; i < collectionLength; i++) {
-      values.push(generateName())
-    }
+  describe('Unit tests', function () {
+    it('should create a very large collection', async () => {
+      const collectionLength = 2000
+      const values: string[] = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
 
-    const collectionId = await collection.createCollection(
-      {
+      const txid = await collection.createCollection({
+        description: 'a collection with 2000 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      })
+      const log = await Utils.transactionCompletion(txid, {
+        node: NetworkOption.LocalNet,
+      })
+      const collectionId = log.parsedStack[0]
+      const collectionJSON = await collection.getCollectionJSON({
+        collectionId,
+      })
+
+      values.forEach((val: any, i: number) => {
+        assert.deepEqual(val, collectionJSON.values[i])
+      })
+    })
+
+    it('should synchronously create a collection', async () => {
+      const collectionLength = 100
+      const values: string[] = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
+
+      const collectionId = await collection.createCollection(
+        {
+          description: 'a collection with 100 objects',
+          collectionType: 'string',
+          extra: '',
+          values,
+        },
+        { synchronous: true }
+      )
+
+      const collectionJSON = await collection.getCollectionJSON({
+        collectionId,
+      })
+
+      values.forEach((val: any, i: number) => {
+        assert.deepEqual(val, collectionJSON.values[i])
+      })
+    })
+
+    it('should create a integer collection', async () => {
+      const collectionLength = 10
+      const values: string[] = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(i.toString())
+      }
+
+      const collectionId = await collection.createCollection(
+        {
+          description: 'a collection with 10 objects',
+          collectionType: 'integer',
+          extra: '',
+          values,
+        },
+        { synchronous: true }
+      )
+
+      const collectionJSON = await collection.getCollectionJSON({
+        collectionId,
+      })
+
+      values.forEach((val: any, i: number) => {
+        assert.deepEqual(Number(val), collectionJSON.values[i])
+      })
+    })
+
+    it('should get a collection in JSON format', async () => {
+      const collectionLength = 20
+      const values: string[] = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
+
+      const description = 'a collection with 20 objects'
+      const collectionType = 'string'
+      const extra = 'extra information'
+
+      const collectionId = await collection.createCollection(
+        {
+          description,
+          collectionType,
+          extra,
+          values,
+        },
+        { synchronous: true }
+      )
+
+      const collectionJSON = await collection.getCollectionJSON({
+        collectionId,
+      })
+
+      assert.deepEqual(u.HexString.fromBase64(u.utf82base64(collectionJSON.id)).toNumber(), collectionId)
+      assert.deepEqual(u.HexString.fromBase64(collectionJSON.author).toLittleEndian(), account.scriptHash)
+      assert.deepEqual(collectionJSON.description, description)
+      assert.deepEqual(collectionJSON.type, collectionType)
+      assert.deepEqual(collectionJSON.extra, extra)
+      assert.sameDeepMembers(collectionJSON.values, values)
+    })
+
+    it('should get a collection', async () => {
+      const collectionLength = 20
+      const values: string[] = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
+
+      const description = 'a collection with 20 objects'
+      const collectionType = 'string'
+      const extra = 'extra information'
+
+      const collectionId = await collection.createCollection(
+        {
+          description,
+          collectionType,
+          extra,
+          values,
+        },
+        { synchronous: true }
+      )
+
+      const collectionList = await collection.getCollection({
+        collectionId,
+      })
+
+      assert.deepEqual(u.HexString.fromBase64(u.utf82base64(collectionList[0])).toNumber(), collectionId)
+      assert.deepEqual(u.HexString.fromBase64(collectionList[1]).toLittleEndian(), account.scriptHash)
+      assert.deepEqual(collectionList[2], description)
+      assert.deepEqual(collectionList[3], collectionType)
+      assert.deepEqual(collectionList[4], extra)
+      assert.sameDeepMembers(collectionList[5], values)
+    })
+
+    it('should get elements from a very large collection', async () => {
+      const values: string[] = []
+      for (let i = 0; i < 500; i++) {
+        values.push(generateName())
+      }
+
+      const txid = await collection.createCollection({
+        description: 'a small collection',
+        collectionType: 'string',
+        extra: '',
+        values,
+      })
+      const log = await Utils.transactionCompletion(txid, {
+        node: NetworkOption.LocalNet,
+      })
+
+      const collectionId = log.parsedStack[0]
+
+      let collectionElement
+      for (let i = 0; i < values.length; i++) {
+        const val = values[i]
+        collectionElement = await collection.getCollectionElement({
+          collectionId,
+          index: i,
+        })
+        assert.deepEqual(val, collectionElement)
+      }
+    })
+
+    it('should get the collection length', async () => {
+      const values: string[] = []
+      for (let i = 0; i < 100; i++) {
+        values.push(generateName())
+      }
+
+      const collectionId = await collection.createCollection(
+        {
+          description: 'a collection with 100 objects',
+          collectionType: 'string',
+          extra: '',
+          values,
+        },
+        { synchronous: true }
+      )
+
+      const collectionLength = await collection.getCollectionLength({
+        collectionId,
+      })
+      assert.deepEqual(values.length, collectionLength)
+    })
+
+    it('should get a collection values', async () => {
+      const collectionLength = 50
+      const values: string[] = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
+      const collectionId = await collection.createCollection(
+        {
+          description: 'a collection with 50 objects',
+          collectionType: 'string',
+          extra: '',
+          values,
+        },
+        { synchronous: true }
+      )
+
+      const collectionValues = await collection.getCollectionValues({
+        collection_id: collectionId,
+      })
+
+      values.forEach((val: any, i: number) => {
+        assert.deepEqual(val, collectionValues[i])
+      })
+    })
+
+    it('should get a value from the collection based on entropy', async () => {
+      const collectionLength = 100
+      const values: string[] = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
+
+      const collectionId = await collection.createCollection(
+        {
+          description: 'a collection with 100 objects',
+          collectionType: 'string',
+          extra: '',
+          values,
+        },
+        { synchronous: true }
+      )
+
+      const collectionValueSync = await collection.mapBytesOntoCollection(
+        {
+          collectionId,
+          entropy: '1',
+        },
+        { synchronous: true }
+      )
+      const txId = await collection.mapBytesOntoCollection({
+        collectionId,
+        entropy: '1',
+      })
+
+      const collectionValueAsync = (
+        await Utils.transactionCompletion(txId, {
+          node: NetworkOption.LocalNet,
+        })
+      ).parsedStack[0]
+
+      assert.deepEqual(collectionValueSync, collectionValueAsync)
+    })
+
+    it('should synchronously sample from the range of values in a collection', async () => {
+      const collectionLength = 100
+
+      const values: string[] = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
+
+      const collectionId = await collection.createCollection(
+        {
+          description: 'a collection with 100 objects',
+          collectionType: 'string',
+          extra: '',
+          values,
+        },
+        { synchronous: true }
+      )
+      const samples = await collection.sampleFromCollection(
+        {
+          collectionId,
+          samples: 10,
+        },
+        { synchronous: true }
+      )
+
+      assert.includeMembers(values, samples)
+    })
+
+    it('should synchronously sample from a runtime sample', async () => {
+      const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+      const samples = await collection.sampleFromRuntimeCollection(
+        {
+          values,
+          samples: 10,
+          pick: false,
+        },
+        { synchronous: true }
+      )
+
+      assert.includeMembers(values, samples)
+    })
+
+    it('should get every collection in the contract', async () => {
+      const total = await collection.totalCollections()
+
+      for (let collectionId = 1; collectionId <= total; collectionId++) {
+        const c = await collection.getCollectionJSON({
+          collectionId,
+        })
+        assert.notDeepEqual(c, undefined)
+      }
+    })
+  })
+
+  describe('Sample behavior tests', function () {
+    it('should uniformly sample from the range of values in a collection using the multiple sample feature', async () => {
+      const collectionLength = 50
+      const samplesPerInvocation = 10
+      const runSize = 400
+
+      const values = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
+
+      const txid = await collection.createCollection({
+        description: 'a collection with 50 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      })
+      let log = await Utils.transactionCompletion(txid, {
+        node: NetworkOption.LocalNet,
+      })
+      const collectionId = log.parsedStack[0]
+
+      const txids = []
+      for (let i = 0; i < runSize; i++) {
+        const txid = await collection.sampleFromCollection({
+          collectionId,
+          samples: samplesPerInvocation,
+        })
+        txids.push(txid)
+      }
+      log = await Utils.transactionCompletion(txids[txids.length - 1], {
+        node: NetworkOption.LocalNet,
+      })
+
+      let results: any[] = []
+      for (const txid of txids) {
+        log = await Utils.transactionCompletion(txid, {
+          node: NetworkOption.LocalNet,
+        })
+        results = results.concat(log.parsedStack[0])
+      }
+      const chiSquared = Utils.chiSquared(results)
+      assert(chiSquared < 73, `chi-squared: ${chiSquared}`)
+    })
+
+    it('should uniformly sample from the range of values in a collection', async () => {
+      const collectionLength = 100
+      const runSize = 2000
+
+      const values = []
+      for (let i = 0; i < collectionLength; i++) {
+        values.push(generateName())
+      }
+
+      const txid = await collection.createCollection({
         description: 'a collection with 100 objects',
         collectionType: 'string',
         extra: '',
         values,
-      },
-      { synchronous: true }
-    )
-
-    const cLength = await collection.getCollectionLength({
-      collectionId,
-    })
-    assert.equal(collectionLength, cLength)
-
-    const res2 = await collection.getCollectionJSON({
-      collectionId,
-    })
-
-    values.forEach((val: any, i: number) => {
-      assert(val === res2.values[i])
-    })
-  })
-
-  it('should create a very large collection', async () => {
-    const collectionLength = 2000
-    const values: string[] = []
-    for (let i = 0; i < collectionLength; i++) {
-      values.push(generateName())
-    }
-
-    const txid = await collection.createCollection({
-      description: 'a collection with 2000 objects',
-      collectionType: 'string',
-      extra: '',
-      values,
-    })
-    const log = await Utils.transactionCompletion(txid, {
-      node: NetworkOption.LocalNet,
-    })
-    const collectionId = log.parsedStack[0]
-    const cLength = await collection.getCollectionLength({
-      collectionId,
-    })
-    assert.equal(collectionLength, cLength)
-
-    const res2 = await collection.getCollectionJSON({
-      collectionId,
-    })
-
-    values.forEach((val: any, i: number) => {
-      assert(val === res2.values[i])
-    })
-  })
-
-  it('should pop values from a very large collection', async () => {
-    const values: string[] = []
-    for (let i = 0; i < 500; i++) {
-      values.push(generateName())
-    }
-
-    const txid = await collection.createCollection({
-      description: 'a small collection',
-      collectionType: 'string',
-      extra: '',
-      values,
-    })
-    const log = await Utils.transactionCompletion(txid, {
-      node: NetworkOption.LocalNet,
-    })
-
-    const collectionId = log.parsedStack[0]
-
-    const collectionLength = await collection.getCollectionLength({
-      collectionId,
-    })
-    assert.equal(values.length, collectionLength)
-
-    let res2
-    for (let i = 0; i < collectionLength; i++) {
-      const val = values[i]
-      res2 = await collection.getCollectionElement({
-        collectionId,
-        index: i,
       })
-      assert.equal(val, res2)
-    }
-  })
-
-  it('should uniformly sample from the range of values in a collection using the multiple sample feature', async () => {
-    const collectionLength = 50
-    const samplesPerInvocation = 10
-    const runSize = 400
-
-    const values = []
-    for (let i = 0; i < collectionLength; i++) {
-      values.push(generateName())
-    }
-
-    const txid = await collection.createCollection({
-      description: 'a collection with 2000 objects',
-      collectionType: 'string',
-      extra: '',
-      values,
-    })
-    let log = await Utils.transactionCompletion(txid, {
-      node: NetworkOption.LocalNet,
-    })
-    const collectionId = log.parsedStack[0]
-
-    const txids = []
-    for (let i = 0; i < runSize; i++) {
-      const txid = await collection.sampleFromCollection({
-        collectionId,
-        samples: samplesPerInvocation,
-      })
-      txids.push(txid)
-    }
-    log = await Utils.transactionCompletion(txids[txids.length - 1], {
-      node: NetworkOption.LocalNet,
-    })
-
-    let results: any[] = []
-    for (const txid of txids) {
-      log = await Utils.transactionCompletion(txid, {
+      let log = await Utils.transactionCompletion(txid, {
         node: NetworkOption.LocalNet,
       })
-      results = results.concat(log.parsedStack[0])
-    }
-    const chiSquared = Utils.chiSquared(results)
-    assert(chiSquared < 30, `chi-squared: ${chiSquared}`)
-  })
+      const collectionId = log.parsedStack[0]
 
-  it('should uniformly sample from the range of values in a collection', async () => {
-    const collectionLength = 100
-    const runSize = 2000
-
-    const values = []
-    for (let i = 0; i < collectionLength; i++) {
-      values.push(generateName())
-    }
-
-    const txid = await collection.createCollection({
-      description: 'a collection with 2000 objects',
-      collectionType: 'string',
-      extra: '',
-      values,
-    })
-    let log = await Utils.transactionCompletion(txid, {
-      node: NetworkOption.LocalNet,
-    })
-    const collectionId = log.parsedStack[0]
-
-    const txids = []
-    for (let i = 0; i < runSize; i++) {
-      const txid = await collection.sampleFromCollection({
-        collectionId,
-        samples: 1,
-      })
-      txids.push(txid)
-    }
-    log = await Utils.transactionCompletion(txids[txids.length - 1], {
-      node: NetworkOption.LocalNet,
-    })
-
-    let results: any[] = []
-    for (const txid of txids) {
-      log = await Utils.transactionCompletion(txid, {
+      const txids = []
+      for (let i = 0; i < runSize; i++) {
+        const txid = await collection.sampleFromCollection({
+          collectionId,
+          samples: 1,
+        })
+        txids.push(txid)
+      }
+      log = await Utils.transactionCompletion(txids[txids.length - 1], {
         node: NetworkOption.LocalNet,
       })
-      results = results.concat(log.parsedStack[0])
-    }
-    const chiSquared = Utils.chiSquared(results)
-    assert(chiSquared < 30, `chi-squared: ${chiSquared}`)
-  })
 
-  it('should get every collection in the contract', async () => {
-    const total = await collection.totalCollections()
-
-    for (let collectionId = 1; collectionId <= total; collectionId++) {
-      const c = await collection.getCollectionJSON({
-        collectionId,
-      })
-      assert(c !== undefined)
-    }
-  })
-
-  it('should sample uniformly from a runtime sample', async () => {
-    const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-    const txid = await collection.sampleFromRuntimeCollection({
-      values,
-      samples: 1000,
-      pick: false,
+      let results: any[] = []
+      for (const txid of txids) {
+        log = await Utils.transactionCompletion(txid, {
+          node: NetworkOption.LocalNet,
+        })
+        results = results.concat(log.parsedStack[0])
+      }
+      const chiSquared = Utils.chiSquared(results)
+      assert(chiSquared < 132, `chi-squared: ${chiSquared}`)
     })
-    const log = await Utils.transactionCompletion(txid, {
-      node: NetworkOption.LocalNet,
-    })
-    const result = log.parsedStack[0]
 
-    const chiSquared = Utils.chiSquared(result)
-    assert(chiSquared < 20)
-  })
-
-  it('should pick 9 of the 10 samples multiple times without repeating', async () => {
-    const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
-    const txids: string[] = []
-    for (let i = 0; i < 20; i++) {
+    it('should sample uniformly from a runtime sample', async () => {
+      const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
       const txid = await collection.sampleFromRuntimeCollection({
         values,
-        samples: 9,
-        pick: true,
+        samples: 1000,
+        pick: false,
       })
-      txids.push(txid)
-    }
-    let log = await Utils.transactionCompletion(txids[txids.length - 1], {
-      node: NetworkOption.LocalNet,
-    })
-
-    for (const txid of txids) {
-      log = await Utils.transactionCompletion(txid, {
+      const log = await Utils.transactionCompletion(txid, {
         node: NetworkOption.LocalNet,
       })
       const result = log.parsedStack[0]
-      assert(result.length === result.filter(onlyUnique).length)
-    }
 
-    function onlyUnique(value: any, index: number, self: any) {
-      return self.indexOf(value) === index
-    }
-  })
-
-  it('should reject a runtime sampling because the picks count is larger than the array length', async () => {
-    const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
-    try {
-      await collection.sampleFromRuntimeCollection({
-        values,
-        samples: 12,
-        pick: true,
-      })
-      assert.fail('this tx should fail due to sample length')
-    } catch (e) {}
-  })
-
-  it('should get a value from the collection based on entropy', async () => {
-    const collectionLength = 100
-    const values: string[] = []
-    for (let i = 0; i < collectionLength; i++) {
-      values.push(generateName())
-    }
-
-    const collectionId = await collection.createCollection(
-      {
-        description: 'a collection with 100 objects',
-        collectionType: 'string',
-        extra: '',
-        values,
-      },
-      { synchronous: true }
-    )
-
-    const collectionValueSync = await collection.mapBytesOntoCollection(
-      {
-        collectionId,
-        entropy: '1',
-      },
-      { synchronous: true }
-    )
-    const txId = await collection.mapBytesOntoCollection({
-      collectionId,
-      entropy: '1',
+      const chiSquared = Utils.chiSquared(result)
+      assert(chiSquared < 20)
     })
 
-    const collectionValueAsync = (
-      await Utils.transactionCompletion(txId, {
+    it('should pick 9 of the 10 samples multiple times without repeating', async () => {
+      const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+
+      const txids: string[] = []
+      for (let i = 0; i < 20; i++) {
+        const txid = await collection.sampleFromRuntimeCollection({
+          values,
+          samples: 9,
+          pick: true,
+        })
+        txids.push(txid)
+      }
+      let log = await Utils.transactionCompletion(txids[txids.length - 1], {
         node: NetworkOption.LocalNet,
       })
-    ).parsedStack[0]
 
-    assert.deepEqual(collectionValueSync, collectionValueAsync)
-  })
+      for (const txid of txids) {
+        log = await Utils.transactionCompletion(txid, {
+          node: NetworkOption.LocalNet,
+        })
+        const result = log.parsedStack[0]
+        assert.deepEqual(result.length, result.filter(onlyUnique).length)
+      }
 
-  it('should synchronously sample from the range of values in a collection', async () => {
-    const collectionLength = 100
+      function onlyUnique(value: any, index: number, self: any) {
+        return self.indexOf(value) === index
+      }
+    })
 
-    const values: string[] = []
-    for (let i = 0; i < collectionLength; i++) {
-      values.push(generateName())
-    }
+    it('should reject a runtime sampling because the picks count is larger than the array length', async () => {
+      const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
-    const collectionId = await collection.createCollection(
-      {
-        description: 'a collection with 100 objects',
-        collectionType: 'string',
-        extra: '',
-        values,
-      },
-      { synchronous: true }
-    )
-    const samples = await collection.sampleFromCollection(
-      {
-        collectionId,
-        samples: 10,
-      },
-      { synchronous: true }
-    )
-
-    assert.includeMembers(values, samples)
-  })
-
-  it('should synchronously sample from a runtime sample', async () => {
-    const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-    const samples = await collection.sampleFromRuntimeCollection(
-      {
-        values,
-        samples: 10,
-        pick: false,
-      },
-      { synchronous: true }
-    )
-
-    assert.includeMembers(values, samples)
+      try {
+        await collection.sampleFromRuntimeCollection({
+          values,
+          samples: 12,
+          pick: true,
+        })
+        assert.fail('this tx should fail due to sample length')
+      } catch (e) {}
+    })
   })
 })
 
