@@ -1,4 +1,6 @@
-sdk-ts/node_modules
+node_modules
 contract/venv
 .idea
 __pycache__
+frontEnd/dist
+.env.*.local

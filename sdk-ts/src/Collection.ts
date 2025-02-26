@@ -98,12 +98,22 @@ export class Collection {
    * adhere to existing naming conventions.
    * @param params.extra An unregulated field for unplanned feature development.
    * @param params.values An array of values that represent the body of the collection.
+   * @param {InvocationOptions} [opts]
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns A transaction ID. Refer to {@link Utils.transactionCompletion} for parsing the response.
    */
-  async createCollection(params: CreateCollection): Promise<string>
+  async createCollection(params: CreateCollection, opts?: InvocationOptions): Promise<string> {
+    await this.init()
+    return await this.config.invoker!.invokeFunction({
+      invocations: [CollectionAPI.createCollection(this.config.scriptHash!, params)],
+      signers: [],
+    })
+  }
+
   /**
-   * Publishes an array of immutable data to the smart contract along with some useful metadata.
+   * Publishes an array of immutable data to the smart contract along with some useful metadata, and waits for the transaction to be completed.
    *
    * @param params.description A useful description of the collection.
    * @param params.collectionType The type of the data being store. This is an unregulated field. Standard NVM datatypes should
@@ -111,56 +121,20 @@ export class Collection {
    * @param params.extra An unregulated field for unplanned feature development.
    * @param params.values An array of values that represent the body of the collection.
    * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When false return the transaction ID.
-   *
-   * @returns A transaction ID. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async createCollection(params: CreateCollection, opts: { synchronous: false }): Promise<string>
-  /**
-   * Publishes an array of immutable data to the smart contract along with some useful metadata.
-   *
-   * @param params.description A useful description of the collection.
-   * @param params.collectionType The type of the data being store. This is an unregulated field. Standard NVM datatypes should
-   * adhere to existing naming conventions.
-   * @param params.extra An unregulated field for unplanned feature development.
-   * @param params.values An array of values that represent the body of the collection.
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When true the method should wait the transaction to be completed and return the response.
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns The new collection ID.
    */
-  async createCollection(params: CreateCollection, opts: { synchronous: true }): Promise<number>
-  /**
-   * Publishes an array of immutable data to the smart contract along with some useful metadata.
-   *
-   * @param params.description A useful description of the collection.
-   * @param params.collectionType The type of the data being store. This is an unregulated field. Standard NVM datatypes should
-   * adhere to existing naming conventions.
-   * @param params.extra An unregulated field for unplanned feature development.
-   * @param params.values An array of values that represent the body of the collection.
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
-   * the response, or to just return the transaction ID.
-   *
-   * @returns A transaction ID or the new collection ID. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async createCollection(params: CreateCollection, opts: InvocationOptions): Promise<number>
-  async createCollection(
-    params: CreateCollection,
-    opts: InvocationOptions = { synchronous: false }
-  ): Promise<string | number> {
+  async createCollectionSync(params: CreateCollection, opts?: InvocationOptions): Promise<number> {
     await this.init()
     const txId = await this.config.invoker!.invokeFunction({
       invocations: [CollectionAPI.createCollection(this.config.scriptHash!, params)],
       signers: [],
     })
 
-    if (!opts.synchronous) {
-      return txId
-    }
-
     const resp = await Utils.transactionCompletion(txId, {
-      timeout: TIMEOUT,
+      timeout: opts?.timeout ?? TIMEOUT,
       node: this.config.node as NetworkOption,
     })
 
@@ -285,13 +259,24 @@ export class Collection {
    *
    * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
    * @param params.entropy Bytes to use for the mapping.
+   * @param {InvocationOptions} [opts]
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
    * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
    */
-  async mapBytesOntoCollection(params: MapBytesOntoCollection): Promise<string>
+  async mapBytesOntoCollection(params: MapBytesOntoCollection, opts?: InvocationOptions): Promise<string> {
+    await this.init()
+    return await this.config.invoker!.invokeFunction({
+      invocations: [CollectionAPI.mapBytesOntoCollection(this.config.scriptHash!, params)],
+      signers: [],
+    })
+  }
+
   /**
-   * Maps byte entropy onto a collection's values and returns the index of the result. The mapping is made as follows:
+   * Maps byte entropy onto a collection's values and returns the index of the result, and waits for the transaction to be completed.
+   * The mapping is made as follows:
    *
    * [0 -> MAX(entropyBytes.length)][entropy] -> [0 -> collection.length][index]
    *
@@ -302,65 +287,21 @@ export class Collection {
    * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
    * @param params.entropy Bytes to use for the mapping.
    * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When false return the transaction ID.
-   *
-   * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
-   * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async mapBytesOntoCollection(params: MapBytesOntoCollection, opts: { synchronous: false }): Promise<string>
-  /**
-   * Maps byte entropy onto a collection's values and returns the index of the result. The mapping is made as follows:
-   *
-   * [0 -> MAX(entropyBytes.length)][entropy] -> [0 -> collection.length][index]
-   *
-   * This method is primarily useful for computationally efficient contract interfacing. For random sampling, or
-   * sampling from a distribution, use {@link getCollectionLength} in combination with {@link getCollectionElement} or
-   * {@link sampleFromCollection}.
-   *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
-   * @param params.entropy Bytes to use for the mapping.
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When true the method should wait the transaction to be completed and return the response.
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns A collection value. This result uses RNG features managed by the consensus nodes and only functions properly
    * with a published transaction.
    */
-  async mapBytesOntoCollection(params: MapBytesOntoCollection, opts: { synchronous: true }): Promise<any>
-  /**
-   * Maps byte entropy onto a collection's values and returns the index of the result. The mapping is made as follows:
-   *
-   * [0 -> MAX(entropyBytes.length)][entropy] -> [0 -> collection.length][index]
-   *
-   * This method is primarily useful for computationally efficient contract interfacing. For random sampling, or
-   * sampling from a distribution, use {@link getCollectionLength} in combination with {@link getCollectionElement} or
-   * {@link sampleFromCollection}.
-   *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
-   * @param params.entropy Bytes to use for the mapping.
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
-   * the response, or to just return the transaction ID.
-   *
-   * @returns A transaction ID or a collection value. This result uses RNG features managed by the consensus nodes and only functions properly
-   * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async mapBytesOntoCollection(params: MapBytesOntoCollection, opts: InvocationOptions): Promise<string | any>
-  async mapBytesOntoCollection(
-    params: MapBytesOntoCollection,
-    opts: InvocationOptions = { synchronous: false }
-  ): Promise<string | any> {
+  async mapBytesOntoCollectionSync(params: MapBytesOntoCollection, opts?: InvocationOptions): Promise<any> {
     await this.init()
     const txId = await this.config.invoker!.invokeFunction({
       invocations: [CollectionAPI.mapBytesOntoCollection(this.config.scriptHash!, params)],
       signers: [],
     })
 
-    if (!opts.synchronous) {
-      return txId
-    }
-
     const resp = await Utils.transactionCompletion(txId, {
-      timeout: TIMEOUT,
+      timeout: opts?.timeout ?? TIMEOUT,
       node: this.config.node as NetworkOption,
     })
 
@@ -372,64 +313,43 @@ export class Collection {
    *
    * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
    * @param params.samples The number of samples to return
+   * @param {InvocationOptions} [opts]
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
    * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
    */
-  async sampleFromCollection(params: SampleFromCollection): Promise<string>
+  async sampleFromCollection(params: SampleFromCollection, opts?: InvocationOptions): Promise<string> {
+    await this.init()
+    return await this.config.invoker!.invokeFunction({
+      invocations: [CollectionAPI.sampleFromCollection(this.config.scriptHash!, params)],
+      signers: [],
+    })
+  }
+
   /**
-   * Samples a uniform random value from the collection using a Contract.Call to the {@link https://github.com/CityOfZion/props_dice | Dice} contract.
+   * Samples a uniform random value from the collection using a Contract.Call to the {@link https://github.com/CityOfZion/props_dice | Dice} contract,
+   * and waits for the transaction to be completed.
    *
    * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
    * @param params.samples The number of samples to return
    * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When false return the transaction ID.
-   *
-   * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
-   * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async sampleFromCollection(params: SampleFromCollection, opts: { synchronous: false }): Promise<string>
-  /**
-   * Samples a uniform random value from the collection using a Contract.Call to the {@link https://github.com/CityOfZion/props_dice | Dice} contract.
-   *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
-   * @param params.samples The number of samples to return
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When true the method should wait the transaction to be completed and return the response.
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns A list of values. This result uses RNG features managed by the consensus nodes and only functions properly
-   * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
+   * with a published transaction.
    */
-  async sampleFromCollection(params: SampleFromCollection, opts: { synchronous: true }): Promise<any[]>
-  /**
-   * Samples a uniform random value from the collection using a Contract.Call to the {@link https://github.com/CityOfZion/props_dice | Dice} contract.
-   *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
-   * @param params.samples The number of samples to return
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
-   * the response, or to just return the transaction ID.
-   *
-   * @returns A transaction ID or a list of values. This result uses RNG features managed by the consensus nodes and only functions properly
-   * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async sampleFromCollection(params: SampleFromCollection, opts: InvocationOptions): Promise<string | any[]>
-  async sampleFromCollection(
-    params: SampleFromCollection,
-    opts: InvocationOptions = { synchronous: false }
-  ): Promise<string | any[]> {
+  async sampleFromCollectionSync(params: SampleFromCollection, opts?: InvocationOptions): Promise<any[]> {
     await this.init()
     const txId = await this.config.invoker!.invokeFunction({
       invocations: [CollectionAPI.sampleFromCollection(this.config.scriptHash!, params)],
       signers: [],
     })
 
-    if (!opts.synchronous) {
-      return txId
-    }
-
     const resp = await Utils.transactionCompletion(txId, {
-      timeout: TIMEOUT,
+      timeout: opts?.timeout ?? TIMEOUT,
       node: this.config.node as NetworkOption,
     })
 
@@ -443,74 +363,45 @@ export class Collection {
    * @param params.values an array of values to sample from
    * @param params.samples the number of samples to fairly select from the values
    * @param params.pick Are selected values removed from the list of options for future samples?
-   *
-   * @returns A transaction ID or a list of values. This result uses RNG features managed by the consensus nodes and only functions properly
-   * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async sampleFromRuntimeCollection(params: SampleFromRuntimeCollection): Promise<string>
-  /**
-   * Samples uniformly from a collection provided at the time of invocation. Users have the option to 'pick', which
-   * prevents a value from being selected multiple times. The results are published as outputs on the transaction.
-   *
-   * @param params.values an array of values to sample from
-   * @param params.samples the number of samples to fairly select from the values
-   * @param params.pick Are selected values removed from the list of options for future samples?
    * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When false return the transaction ID.
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns A transaction ID. This result uses RNG features managed by the consensus nodes and only functions properly
    * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
    */
-  async sampleFromRuntimeCollection(params: SampleFromRuntimeCollection, opts: { synchronous: false }): Promise<string>
+  async sampleFromRuntimeCollection(params: SampleFromRuntimeCollection, opts?: InvocationOptions): Promise<string> {
+    await this.init()
+    return await this.config.invoker!.invokeFunction({
+      invocations: [CollectionAPI.sampleFromRuntimeCollection(this.config.scriptHash!, params)],
+      signers: [],
+    })
+  }
+
   /**
-   * Samples uniformly from a collection provided at the time of invocation. Users have the option to 'pick', which
-   * prevents a value from being selected multiple times. The results are published as outputs on the transaction.
+   * Samples uniformly from a collection provided at the time of invocation, and waits for the transaction to be completed.
+   * Users have the option to 'pick', which prevents a value from being selected multiple times.
+   * The results are published as outputs on the transaction.
    *
    * @param params.values an array of values to sample from
    * @param params.samples the number of samples to fairly select from the values
    * @param params.pick Are selected values removed from the list of options for future samples?
    * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When true the method should wait the transaction to be completed and return the response.
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns A list of values. This result uses RNG features managed by the consensus nodes and only functions properly
-   * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
+   * with a published transaction.
    */
-  async sampleFromRuntimeCollection(params: SampleFromRuntimeCollection, opts: { synchronous: true }): Promise<any[]>
-  /**
-   * Samples uniformly from a collection provided at the time of invocation. Users have the option to 'pick', which
-   * prevents a value from being selected multiple times. The results are published as outputs on the transaction.
-   *
-   * @param params.values an array of values to sample from
-   * @param params.samples the number of samples to fairly select from the values
-   * @param params.pick Are selected values removed from the list of options for future samples?
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
-   * the response, or to just return the transaction ID.
-   *
-   * @returns A transaction ID or a list of values. This result uses RNG features managed by the consensus nodes and only functions properly
-   * with a published transaction. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async sampleFromRuntimeCollection(
-    params: SampleFromRuntimeCollection,
-    opts: InvocationOptions
-  ): Promise<string | any[]>
-
-  async sampleFromRuntimeCollection(
-    params: SampleFromRuntimeCollection,
-    opts: InvocationOptions = { synchronous: false }
-  ): Promise<string | any[]> {
+  async sampleFromRuntimeCollectionSync(params: SampleFromRuntimeCollection, opts?: InvocationOptions): Promise<any[]> {
     await this.init()
     const txId = await this.config.invoker!.invokeFunction({
       invocations: [CollectionAPI.sampleFromRuntimeCollection(this.config.scriptHash!, params)],
       signers: [],
     })
 
-    if (!opts.synchronous) {
-      return txId
-    }
-
     const resp = await Utils.transactionCompletion(txId, {
-      timeout: TIMEOUT,
+      timeout: opts?.timeout ?? TIMEOUT,
       node: this.config.node as NetworkOption,
     })
 
@@ -540,49 +431,38 @@ export class Collection {
   /**
    * Updates the contract
    * @param params
+   * @param {InvocationOptions} [opts]
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
    * @returns A transaction ID. Refer to {@link Utils.transactionCompletion} for parsing the response.
    */
-  async update(params: Update): Promise<string>
+  async update(params: Update, opts?: InvocationOptions): Promise<string | void> {
+    await this.init()
+    return await this.config.invoker!.invokeFunction({
+      invocations: [CollectionAPI.update(this.config.scriptHash!, params)],
+      signers: [],
+    })
+  }
+
   /**
-   * Updates the contract
+   * Updates the contract, and waits for the transaction to be completed.
    * @param params
    * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When false return the transaction ID.
+   * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
+   * This property only affects synchronous methods.
    *
-   * @returns A transaction ID. Refer to {@link Utils.transactionCompletion} for parsing the response.
+   * @returns Nothing if the update succeeds.
    */
-  async update(params: Update, opts: { synchronous: false }): Promise<string>
-  /**
-   * Updates the contract
-   * @param params
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous When true the method should wait the transaction to be completed and return the response.
-   */
-  async update(params: Update, opts: { synchronous: true }): Promise<void>
-  /**
-   * Updates the contract
-   * @param params
-   * @param {InvocationOptions} [opts]
-   * @param opts.synchronous A boolean value indicating whether the method should wait the transaction to be completed and return
-   * the response, or to just return the transaction ID.
-   *
-   * @returns A transaction ID or nothing if the update succeeds. Refer to {@link Utils.transactionCompletion} for parsing the response.
-   */
-  async update(params: Update, opts: InvocationOptions): Promise<string | void>
-  async update(params: Update, opts: InvocationOptions = { synchronous: false }): Promise<string | void> {
+  async updateSync(params: Update, opts?: InvocationOptions): Promise<string | void> {
     await this.init()
     const txId = await this.config.invoker!.invokeFunction({
       invocations: [CollectionAPI.update(this.config.scriptHash!, params)],
       signers: [],
     })
 
-    if (!opts.synchronous) {
-      return txId
-    }
-
     await Utils.transactionCompletion(txId, {
-      timeout: TIMEOUT,
+      timeout: opts?.timeout ?? TIMEOUT,
       node: this.config.node as NetworkOption,
     })
   }

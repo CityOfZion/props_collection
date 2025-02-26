@@ -1,0 +1,4 @@
+pip install neo3-boa
+--------------------------------
+neo3-boa compile ./contract/collection.py
+...
