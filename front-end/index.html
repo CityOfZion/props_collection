@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/coz_favicon.ico" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Props Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="bg-secondary">
+  <header class="bg-header mb-5 d-flex align-items-center" style="min-height: 85px;">
+    <div class="d-flex container py-3 pb-1">
+
+      <nav class="navbar navbar-expand-lg w-100">
+        <div class="container-fluid">
+          <div class="navbar-brand d-flex align-items-center me-auto">
+            <img style="height:20px;" src="/props_logo.png" />
+            <div style="height:20px;" class="mx-3 divider-header border-end w-1"></div>
+            <span class="fs-5 text-primary font-inter">Collection</span>
+          </div>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-6 gap-lg-4">
+              <li class="nav-item">
+                <a href="https://github.com/CityOfZion/props_collection" target="_blank"
+                  class="nav-link fw-light text-white">GitHub</a>
+              </li>
+              <li class="nav-item">
+                <a href="https://github.com/CityOfZion/props_collection" target="_blank"
+                  class="nav-link fw-light text-white">Documentation</a>
+              </li>
+              <li class="nav-item">
+                <button id="connect-button" type="button" class="btn btn-outline-primary fw-medium">Connect
+                  Wallet</button>
+                <button id="disconnect-button" type="button" class="btn btn-outline-primary fw-medium d-none">
+                  <img src="/neon_wallet_icon.svg" class="me-1" />
+                  Disconnect
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+  </header>
+
+  <div id="app" class="container text-body text-center">
+
+    <div id="hero-image" style="margin-bottom: 54px; height: 270px;"
+      class="bg-image w-full d-flex align-items-center justify-content-center gap-5 overflow-hidden">
+      <img src="/card_icon.svg" class="d-none d-lg-block" />
+      <img src="/card_icon.svg" class="d-none d-md-block" />
+      <img src="/card_icon.svg" />
+      <img src="/main_card_icon.svg" />
+      <img src="/card_icon.svg" />
+      <img src="/card_icon.svg" class="d-none d-md-block" />
+      <img src="/card_icon.svg" class="d-none d-lg-block" />
+    </div>
+
+    <div id="collection-description-section" style="margin-bottom: 54px;">
+      <h2>Collections</h2>
+      <p class="fs-5 fw-light">Collections the tools to deliver complex on-chain routines, a ready-to-use framework for
+        new projects,
+        and real-world contracts with off-chain integrations as a practical reference.</p>
+    </div>
+
+    <div id="quickstart-section" style="margin-bottom: 74px;">
+      <h2>Quickstart</h2>
+
+      <ul class="nav nav-pills d-flex justify-content-center mb-3" id="language-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="nav-tab-typescript" data-bs-toggle="tab" data-bs-target="#tab-typescript"
+            type="button" role="tab" aria-controls="tab1" aria-selected="true">
+            Typescript
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="nav-tab-boa" data-bs-toggle="tab" data-bs-target="#tab-boa" type="button"
+            role="tab" aria-controls="tab2" aria-selected="false">
+            Boa
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="code-tabs">
+        <div class="tab-pane fade show active" id="tab-typescript" role="tabpanel" aria-labelledby="nav-tab-typescript">
+          <div class="card code-card">
+            <div class="card-body ps-4 pt-3 h-100">
+              <pre class="code-block h-100" id="code-typescript"></pre>
+              <button id="copy-typescript" class="position-absolute top-0 end-0 mt-3 me-3 btn bg-transparent">
+                <img src="/copy_icon.svg">
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="tab-boa" role="tabpanel" aria-labelledby="nav-tab-boa">
+          <div class="card code-card">
+            <div class="card-body ps-4 pt-3 h-100">
+              <pre class="code-block h-100" id="code-boa"></pre>
+              <button id="copy-boa" class="position-absolute top-0 end-0 mt-3 me-3 btn bg-transparent">
+                <img src="/copy_icon.svg">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="features-section" style="margin-bottom: 120px;">
+      <h2>Sample features</h2>
+      <p class="fs-5 fw-light" style="margin-bottom: 62px;">Experiment with the features</p>
+
+      <div class="d-flex justify-content-center gap-4 flex-column flex-md-row">
+        <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasCreate" aria-controls="offcanvasCreate">Create Collection</button>
+        <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasSample" aria-controls="offcanvasSample">Sample from collection</button>
+        <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasSampleRuntime" aria-controls="offcanvasSampleRuntime">Sample from Runtime
+          collection</button>
+      </div>
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCreate" aria-labelledby="offcanvasCreateLabel">
+        <div class="offcanvas-header flex-column">
+          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          <div class="offcanvas-title" id="offcanvasCreateLabel">Create Collection</div>
+          <div class="text-white-50 fw-light fs-5 mt-1">Enter the details for your new collection</div>
+        </div>
+        <div class="offcanvas-body">
+          <form id="form-create-collection">
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <input name="description" type="text" class="text-white" aria-label="Description">
+              <label class="form-label">Collection Type</label>
+              <input name="collection-type" type="text" class="text-white" aria-label="Collection Type">
+              <label class="form-label">Extra</label>
+              <input name="extra" type="text" class="text-white" aria-label="Extra">
+              <label class="form-label d-flex gap-1">Values<div class="text-white-50 fw-lighter">(CSV formatted)</div>
+              </label>
+              <textarea name="values" aria-label="Values"></textarea>
+            </div>
+            <div style="margin-top: 20px;" class="d-flex justify-content-end">
+              <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Create</button>
+              <button name="btn-disabled" style="width: 360px;" disabled
+                class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSample" aria-labelledby="offcanvasSampleLabel">
+        <div class="offcanvas-header flex-column">
+          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          <div class="offcanvas-title" id="offcanvasSampleLabel">Sample from collection</div>
+        </div>
+        <div class="offcanvas-body">
+          <form id="form-sample-collection">
+            <div class="mb-3">
+              <label class="form-label">Collection ID</label>
+              <input name="collection-id" type="text" class="text-white" aria-label="Collection ID">
+              <label class="form-label">Sample count</label>
+              <input name="sample-count" type="number" class="text-white" aria-label="Collection ID">
+            </div>
+            <div style="margin-top: 20px;" class="d-flex justify-content-end">
+              <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Sample</button>
+              <button name="btn-disabled" style="width: 360px;" disabled
+                class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSampleRuntime"
+        aria-labelledby="offcanvasSampleRuntimeLabel">
+        <div class="offcanvas-header flex-column">
+          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          <div class="offcanvas-title" id="offcanvasSampleRuntimeLabel">Sample from Runtime collection</div>
+        </div>
+        <div class="offcanvas-body">
+          <form id="form-sample-runtime-collection">
+            <div class="mb-3">
+              <label class="form-label d-flex gap-1">Values<div class="fs-14px fw-lighter align-self-end">(CSV
+                  formatted)</div>
+              </label>
+              <textarea name="values" aria-label="Values"></textarea>
+
+              <label class="form-label">Sample count</label>
+              <input name="sample-count" type="number" class="text-white" aria-label="Sample count">
+
+              <div class="form-check form-switch form-check-reverse d-flex">
+                <label class="form-check-label" for="sampleRuntimeSwitch">Pick</label>
+                <input class="form-check-input ms-auto form-switch-lg" type="checkbox" role="switch" name="switch"
+                  id="sampleRuntimeSwitch">
+              </div>
+            </div>
+            <div style="margin-top: 20px;" class="d-flex justify-content-end">
+              <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Sample</button>
+              <button name="btn-disabled" style="width: 360px;" disabled
+                class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasResult" aria-labelledby="offcanvasResultLabel">
+        <div class="offcanvas-header">
+          <div class="offcanvas-title" id="offcanvasResultLabel">Result</div>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <form id="form-sample-collection">
+            <div class="mb-3">
+              <label class="form-label">VM State:</label>
+              <div type="text" class="form-control bg-dark border-0 mb-4" aria-label="VM State">
+                <span name="vm-state"></span>
+              </div>
+              <label class="form-label">Transaction Fee:</label>
+              <input readonly name="transaction-fee" type="text" aria-label="Transaction Fee">
+              <label class="form-label">Result:</label>
+              <div class="position-relative">
+                <textarea readonly name="result" type="text" aria-label="Result">
+                </textarea>
+                <button id="copy-results" class="position-absolute top-0 end-0 mt-3 me-3 btn bg-transparent">
+                  <img src="/copy_icon.svg">
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="collections-list-section" style="margin-bottom: 129px;">
+      <h2>Example Collections</h2>
+      <p class="fs-5 fw-light" style="margin-bottom: 62px;">View example collections</p>
+      <div id="collections-list" class="row text-start gy-3 gx-3">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCollection"
+        aria-labelledby="offcanvasCollectionLabel">
+        <div class="offcanvas-header">
+          <div class="offcanvas-title" id="offcanvasCollectionLabel">Collection:
+            <span id="collection-id" class="text-primary">
+            </span>
+          </div>
+          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="mb-3">
+
+            <label class="form-label">Author</label>
+            <input readonly name="author" type="text" aria-label="Author">
+            <label class="form-label">Description</label>
+            <textarea readonly name="description" aria-label="Description"></textarea>
+            <label class="form-label">Collection Type</label>
+            <input readonly name="collection-type" type="text" aria-label="Collection Type">
+            <label class="form-label">Extra</label>
+            <input readonly name="extra" type="text" aria-label="Extra">
+            <label class="form-label d-flex gap-1">Values<div class="fs-14px fw-lighter align-self-end">(CSV formatted)
+              </div>
+            </label>
+            <textarea readonly name="values" aria-label="Values"></textarea>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast-clipboard" class="toast align-items-center text-bg-primary border-0" role="alert"
+      aria-live="assertive" aria-atomic="true">
+      <div class="d-flex align-items-center justify-content-center">
+        <img style="height: 20px; width: 20px;" src="./checkmark_black_icon.svg">
+        <div class="toast-body">
+          Copied to clipboard
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-approved" class="toast align-items-center text-bg-primary border-0" role="alert"
+      aria-live="assertive" aria-atomic="true">
+      <div class="d-flex align-items-center justify-content-center">
+        <img style="height: 20px; width: 20px;" class="ms-3" src="./checkmark_black_icon.svg">
+        <div class="toast-body">
+          Transaction approved, when it's confirmed you will see the result
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-danger" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex align-items-center justify-content-center">
+        <img style="height: 20px; width: 20px;" class="ms-3" src="./exclamation_black_icon.svg">
+        <div class="toast-body">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-white border-top pt-4 mt-5 text-md-start text-center" style="margin-bottom: 60px;">
+    <div class="container d-flex flex-column flex-md-row align-items-center">
+      <div class="col-md-6 d-flex ps-md-4 align-items-end mb-3 mb-md-0">
+        <div class="d-flex flex-column">
+          <a href="https://coz.io" class="d-flex flex-column">
+            <img src="/coz_logo.png" />
+          </a>
+          <div class="fw-medium" style="letter-spacing: 4%;">Developer labs</div>
+        </div>
+      </div>
+      <div
+        class="col-md-6 d-flex align-items-center align-items-md-end fs-18px pe-md-4 flex-column flex-md-row gap-3 gap-md-0">
+        <div class="col-12 col-md-4">
+          <a href="https://twitter.com/coz_official" target="_blank"
+            class="link-underline link-underline-opacity-0 d-block text-white">X</a>
+          <a href="https://www.linkedin.com/company/coz/" target="_blank"
+            class="link-underline link-underline-opacity-0 d-block text-white">Linkedin</a>
+          <a href="https://discord.gg/KZwVCxpWjm" target="_blank"
+            class="link-underline link-underline-opacity-0 d-block text-white">Discord</a>
+        </div>
+        <div class="col-12 col-md-4">
+          <div>General enquiries</div>
+          <a href="mailto:info@coz.io" class="link-underline link-underline-opacity-0">info@coz.io</a>
+        </div>
+        <div class="col-12 col-md-4">
+          <div>New business</div>
+          <a href="mailto:business@coz.io" class="link-underline link-underline-opacity-0">business@coz.io</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

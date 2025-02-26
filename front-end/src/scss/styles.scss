@@ -1,0 +1,129 @@
+$font-family-base: "Inter Tight", sans-serif;
+
+$primary: #00cbff;
+$secondary: #24252C;
+$dark: #212128;
+$body-color: #929393;
+$success: #00FFC2;
+$danger: #FF2A77;
+
+$headings-color: white;
+
+$btn-border-width: 1.5px;
+$btn-border-radius: 27.65px;
+$btn-border-radius-lg: 36px;
+$btn-padding-x: 23px;
+$btn-padding-x-lg: 30px;
+$btn-padding-y-lg: 6px;
+
+$nav-link-font-size: 18px;
+$nav-link-font-weight: 500;
+$nav-pills-link-active-color: $primary;
+$nav-link-color: #A1A2A2;
+$nav-pills-link-active-bg: transparent;
+
+$card-border-radius: 8px;
+$card-bg: transparent;
+
+$offcanvas-horizontal-width: 500px;
+$offcanvas-bg-color: $secondary;
+$offcanvas-color: white;
+
+$btn-close-width: 14px;
+$btn-close-color: $primary;
+$btn-close-opacity: 1;
+
+$form-check-input-border: 0;
+$form-check-input-bg: #32323D;
+$form-switch-color: #67728E;
+
+$badge-padding-x: 1.5em;
+
+$toast-font-size: 16px;
+
+@import "bootstrap/scss/bootstrap";
+
+textarea {
+    @extend .form-control, .bg-dark, .border-0, .mb-4, .text-white;
+    height: 130px;
+}
+
+input[type="text"],
+input[type="number"]{
+    @extend .form-control, .bg-dark, .border-0, .mb-4, .text-white;
+}
+
+input[readonly], textarea[readonly]{
+    color: $body-color !important;
+}
+
+.bg-header {
+    background-color: #19191E;
+}
+
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+.divider-header {
+    border-color: #8D8E91 !important; 
+}
+
+.offcanvas {
+    text-align: start;
+    padding-left: 25px;
+    padding-right: 0px;
+    font-weight: 500;
+}
+
+.offcanvas-header{
+    align-items: start;
+    font-size: 30px;
+    margin-bottom: 40px;
+}
+
+.offcanvas-title{
+    padding-top: 20px;
+    font-size: 30px;
+}
+
+.offcanvas-body{
+    padding-right: 40px;
+}
+
+.form-switch-lg {
+    height: 21px;
+    width: 41px !important;
+    border-radius: 68px;
+    border-color: transparent;
+}
+
+.nav-link {
+    letter-spacing: 0.2px;
+}
+  
+.fs-18px {
+    font-size: 18px;
+}
+
+.fs-14px {
+    font-size: 14px;
+}
+
+.bg-image {
+    background-image: url("/background_image.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.code-card {
+    background-color: $dark;
+    font-size: 16px;
+    height: 450px;
+    text-align: start;
+}
+
+.code-block {
+    font-family: 'Courier', sans-serif; 
+}
