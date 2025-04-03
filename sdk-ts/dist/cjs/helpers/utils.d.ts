@@ -1,5 +1,3 @@
-/// <reference types="node" />
-/// <reference types="node" />
 import { wallet as walletCore } from '@cityofzion/neon-core';
 import { ParsedLog, pollingOptions } from '../types';
 export declare class Utils {

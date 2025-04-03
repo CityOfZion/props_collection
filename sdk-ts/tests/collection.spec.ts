@@ -1,7 +1,11 @@
 import { Collection, Utils } from '../dist/esm'
 import { NetworkOption } from '../dist/esm/constants/config'
 import { wallet, u } from '@cityofzion/neon-js'
-import { assert } from 'chai'
+import * as chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+
+chai.use(chaiAsPromised)
+const assert = chai.assert
 
 describe('Basic Collection Test Suite', function () {
   this.timeout(60000)
@@ -50,15 +54,12 @@ describe('Basic Collection Test Suite', function () {
         values.push(generateName())
       }
 
-      const collectionId = await collection.createCollection(
-        {
-          description: 'a collection with 100 objects',
-          collectionType: 'string',
-          extra: '',
-          values,
-        },
-        { synchronous: true }
-      )
+      const collectionId = await collection.createCollectionSync({
+        description: 'a collection with 100 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      })
 
       const collectionJSON = await collection.getCollectionJSON({
         collectionId,
@@ -76,15 +77,12 @@ describe('Basic Collection Test Suite', function () {
         values.push(i.toString())
       }
 
-      const collectionId = await collection.createCollection(
-        {
-          description: 'a collection with 10 objects',
-          collectionType: 'integer',
-          extra: '',
-          values,
-        },
-        { synchronous: true }
-      )
+      const collectionId = await collection.createCollectionSync({
+        description: 'a collection with 10 objects',
+        collectionType: 'integer',
+        extra: '',
+        values,
+      })
 
       const collectionJSON = await collection.getCollectionJSON({
         collectionId,
@@ -106,15 +104,12 @@ describe('Basic Collection Test Suite', function () {
       const collectionType = 'string'
       const extra = 'extra information'
 
-      const collectionId = await collection.createCollection(
-        {
-          description,
-          collectionType,
-          extra,
-          values,
-        },
-        { synchronous: true }
-      )
+      const collectionId = await collection.createCollectionSync({
+        description,
+        collectionType,
+        extra,
+        values,
+      })
 
       const collectionJSON = await collection.getCollectionJSON({
         collectionId,
@@ -139,15 +134,12 @@ describe('Basic Collection Test Suite', function () {
       const collectionType = 'string'
       const extra = 'extra information'
 
-      const collectionId = await collection.createCollection(
-        {
-          description,
-          collectionType,
-          extra,
-          values,
-        },
-        { synchronous: true }
-      )
+      const collectionId = await collection.createCollectionSync({
+        description,
+        collectionType,
+        extra,
+        values,
+      })
 
       const collectionList = await collection.getCollection({
         collectionId,
@@ -196,15 +188,12 @@ describe('Basic Collection Test Suite', function () {
         values.push(generateName())
       }
 
-      const collectionId = await collection.createCollection(
-        {
-          description: 'a collection with 100 objects',
-          collectionType: 'string',
-          extra: '',
-          values,
-        },
-        { synchronous: true }
-      )
+      const collectionId = await collection.createCollectionSync({
+        description: 'a collection with 100 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      })
 
       const collectionLength = await collection.getCollectionLength({
         collectionId,
@@ -218,18 +207,15 @@ describe('Basic Collection Test Suite', function () {
       for (let i = 0; i < collectionLength; i++) {
         values.push(generateName())
       }
-      const collectionId = await collection.createCollection(
-        {
-          description: 'a collection with 50 objects',
-          collectionType: 'string',
-          extra: '',
-          values,
-        },
-        { synchronous: true }
-      )
+      const collectionId = await collection.createCollectionSync({
+        description: 'a collection with 50 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      })
 
       const collectionValues = await collection.getCollectionValues({
-        collection_id: collectionId,
+        collectionId,
       })
 
       values.forEach((val: any, i: number) => {
@@ -244,23 +230,17 @@ describe('Basic Collection Test Suite', function () {
         values.push(generateName())
       }
 
-      const collectionId = await collection.createCollection(
-        {
-          description: 'a collection with 100 objects',
-          collectionType: 'string',
-          extra: '',
-          values,
-        },
-        { synchronous: true }
-      )
+      const collectionId = await collection.createCollectionSync({
+        description: 'a collection with 100 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      })
 
-      const collectionValueSync = await collection.mapBytesOntoCollection(
-        {
-          collectionId,
-          entropy: '1',
-        },
-        { synchronous: true }
-      )
+      const collectionValueSync = await collection.mapBytesOntoCollectionSync({
+        collectionId,
+        entropy: '1',
+      })
       const txId = await collection.mapBytesOntoCollection({
         collectionId,
         entropy: '1',
@@ -283,36 +263,27 @@ describe('Basic Collection Test Suite', function () {
         values.push(generateName())
       }
 
-      const collectionId = await collection.createCollection(
-        {
-          description: 'a collection with 100 objects',
-          collectionType: 'string',
-          extra: '',
-          values,
-        },
-        { synchronous: true }
-      )
-      const samples = await collection.sampleFromCollection(
-        {
-          collectionId,
-          samples: 10,
-        },
-        { synchronous: true }
-      )
+      const collectionId = await collection.createCollectionSync({
+        description: 'a collection with 100 objects',
+        collectionType: 'string',
+        extra: '',
+        values,
+      })
+      const samples = await collection.sampleFromCollectionSync({
+        collectionId,
+        samples: 10,
+      })
 
       assert.includeMembers(values, samples)
     })
 
     it('should synchronously sample from a runtime sample', async () => {
       const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-      const samples = await collection.sampleFromRuntimeCollection(
-        {
-          values,
-          samples: 10,
-          pick: false,
-        },
-        { synchronous: true }
-      )
+      const samples = await collection.sampleFromRuntimeCollectionSync({
+        values,
+        samples: 10,
+        pick: false,
+      })
 
       assert.includeMembers(values, samples)
     })
@@ -326,6 +297,24 @@ describe('Basic Collection Test Suite', function () {
         })
         assert.notDeepEqual(c, undefined)
       }
+    })
+
+    it('should throw an error after timing out', async () => {
+      const fastTimeout = 500
+
+      const values = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+
+      await assert.isRejected(
+        collection.sampleFromRuntimeCollectionSync(
+          {
+            values,
+            samples: 10,
+            pick: false,
+          },
+          { timeout: fastTimeout }
+        ),
+        'Unable to locate the requested transaction.'
+      )
     })
   })
 
@@ -371,7 +360,7 @@ describe('Basic Collection Test Suite', function () {
         results = results.concat(log.parsedStack[0])
       }
       const chiSquared = Utils.chiSquared(results)
-      assert(chiSquared < 73, `chi-squared: ${chiSquared}`)
+      assert.isBelow(chiSquared, 73, `chi-squared: ${chiSquared}`)
     })
 
     it('should uniformly sample from the range of values in a collection', async () => {
@@ -414,7 +403,7 @@ describe('Basic Collection Test Suite', function () {
         results = results.concat(log.parsedStack[0])
       }
       const chiSquared = Utils.chiSquared(results)
-      assert(chiSquared < 132, `chi-squared: ${chiSquared}`)
+      assert.isBelow(chiSquared, 132, `chi-squared: ${chiSquared}`)
     })
 
     it('should sample uniformly from a runtime sample', async () => {
@@ -430,7 +419,7 @@ describe('Basic Collection Test Suite', function () {
       const result = log.parsedStack[0]
 
       const chiSquared = Utils.chiSquared(result)
-      assert(chiSquared < 20)
+      assert.isBelow(chiSquared, 20)
     })
 
     it('should pick 9 of the 10 samples multiple times without repeating', async () => {
