@@ -1,0 +1,7 @@
+{
+    "scripts": {
+      "build": "pnpm --filter @cityofzion/props-collection run build && pnpm --filter front-end run build",
+      "dev": "pnpm --filter front-end run dev",
+      "preview": "pnpm --filter front-end run preview"
+    }
+  }

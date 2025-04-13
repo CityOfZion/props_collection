@@ -51,9 +51,9 @@ export type ParsedLog = {
 
 /**
  * Defines options for contract invocation.
- * @prop synchronous Determines whether the function should wait for the transaction to be completed or not
+ * @prop timeout Determines how long in microseconds the function should wait for the transaction to be completed
  * @group Interface
  */
 export interface InvocationOptions {
-  synchronous: boolean
+  timeout?: number
 }

@@ -15,11 +15,12 @@
     "access": "public"
   },
   "scripts": {
-    "tsc": "npm run clean && npm run lint && tsc -p tsconfig.build.json && tsc -p tsconfig-cjs.json",
-    "prepublishOnly": "npm run tsc",
+    "tsc": "pnpm run clean && pnpm run lint && tsc -p tsconfig.build.json && tsc -p tsconfig-cjs.json",
+    "prepublishOnly": "pnpm run tsc",
     "clean": "rm -rf ./dist",
     "lint": "eslint --fix .",
-    "docs": "typedoc",
+    "docsBuild": "typedoc",
+    "build": "pnpm run tsc && pnpm run docsBuild",
     "test": "ts-mocha tests/**/*.spec.ts"
   },
   "author": {
@@ -37,13 +38,14 @@
     "save": "^2.9.0"
   },
   "devDependencies": {
+    "@cityofzion/neon-core": "^5.7.0",
     "@types/chai": "^4.3.3",
-    "@types/expect": "^24.3.0",
+    "@types/chai-as-promised": "^8.0.2",
     "@types/mocha": "^9.1.1",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@cityofzion/neon-core": "^5.7.0",
     "assert": "^2.0.0",
     "chai": "^4.3.6",
+    "chai-as-promised": "^8.0.1",
     "cross-env": "^7.0.3",
     "eslint": "8.22.0",
     "eslint-config-prettier": "^8.6.0",
