@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@cityofzion/neon-js": "^5.7.0",
-    "@cityofzion/props-collection": "workspace:*",
+    "@cityofzion/props-collection": "file:../sdk-ts",
     "@cityofzion/wallet-connect-sdk-core": "^3.3.4",
     "@popperjs/core": "^2.11.8",
     "@walletconnect/sign-client": "^2.19.0",
