@@ -28,16 +28,16 @@ The Props Collection SDK provides a TypeScript interface for interacting with Pr
 ### Prerequisites
 
 - Node.js 20 or higher
-- pnpm 10 or higher
+- npm 10 or higher
 
 ### Setup
 
 ```bash
 # Install dependencies
-pnpm install
+npm install
 
 # Build package
-pnpm run tsc
+npm run tsc
 ```
 
 ## Quick Start
@@ -80,5 +80,5 @@ Finally, run the test command at this project:
 
 ```bash
 # Run all tests
-pnpm run test
+npm run test
 ```
