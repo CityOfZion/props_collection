@@ -42,8 +42,6 @@ This front-end package demonstrates how to integrate the Props Collection smart 
 
 ### Setup
 
-> Build [`sdk-ts`](../sdk-ts) with `pnpm tsc` before trying to install this project
-
 ```bash
 # Install dependencies
 pnpm install
