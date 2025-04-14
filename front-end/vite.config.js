@@ -6,7 +6,6 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       nodePolyfills(),
-    ],
-    base: `/v1/get_by_attribute/${env.VITE_NEOFS_CONTAINER_ID}/FilePath/`,
+    ]
   }
 })
