@@ -24,7 +24,7 @@ jobs:
       - name: Build App
         run: cd front-end && npm install --force && NODE_ENV=production CI=false NODE_OPTIONS=--openssl-legacy-provider npm run build --verbose
       - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./front-end/dist/ s3://props-coz/stage/apps/props_collection --delete
+        run: aws s3 sync ./front-end/dist/ s3://marketing-coz/stage/products/props/apps/props_collection --delete
         # Invalidate Cloudfront (this action)
       #- name: invalidate
       #  uses: chetan/invalidate-cloudfront-action@master
