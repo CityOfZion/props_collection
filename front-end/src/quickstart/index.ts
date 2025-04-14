@@ -1,6 +1,8 @@
 import { copyClipboardEvent } from '../helper'
 import typescriptTextFile from './codeTypescript.txt?raw'
 import boaTextFile from './codeBoa.txt?raw'
+import cpmTextFile from './codeCPM.txt?raw'
+
 
 async function loadTypeScriptExample() {
   try {
@@ -28,7 +30,21 @@ async function loadBoaExample() {
   }
 }
 
+async function loadCPMExample() {
+  try {
+    const codeElement = document.getElementById('code-cpm')
+    if (codeElement) {
+      codeElement.innerHTML = cpmTextFile
+    }
+
+    document.querySelector('#copy-cpm')?.addEventListener('click', copyClipboardEvent(cpmTextFile))
+  } catch (error) {
+    console.error('Failed to load CPM example:', error)
+  }
+}
+
 export async function loadLanguagesExample() {
   loadTypeScriptExample()
   loadBoaExample()
+  loadCPMExample()
 }

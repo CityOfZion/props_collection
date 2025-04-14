@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - dev
+      - develop
 
 name: Build and deploy the props components to the stage environment
 
@@ -15,5 +16,5 @@ jobs:
 
       - name: Build SDK
         run: cd sdk-ts && npm install --force && NODE_ENV=production CI=false NODE_OPTIONS=--openssl-legacy-provider npm run build --verbose
-      - name: Build SDK
+      - name: Build App
         run: cd front-end && npm install --force && NODE_ENV=production CI=false NODE_OPTIONS=--openssl-legacy-provider npm run build --verbose
