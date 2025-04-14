@@ -1,7 +1,6 @@
 on:
   push:
     branches:
-      - dev
       - develop
 
 name: Build and deploy the props components to the stage environment
