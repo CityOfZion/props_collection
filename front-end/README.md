@@ -37,28 +37,28 @@ This front-end package demonstrates how to integrate the Props Collection smart 
 ### Prerequisites
 
 - Node.js 20 or higher
-- pnpm 10 or higher
+- npm 10 or higher
 - A WalletConnect project ID
 
 ### Setup
 
 ```bash
 # Install dependencies
-pnpm install
+npm install
 
 # Start development server
-pnpm run dev
+npm run dev
 
 # Build for production
-pnpm run build
+npm run build
 
 # Preview production build
-pnpm run preview
+npm run preview
 ```
 
 ### Environment Variables
 
-Change the variables at the `.env` file:
+Change the variables at the `.env` file, you won't be able to connect with WalletConnect if you don't add a [Project ID](https://docs.reown.com/appkit/vue/cloud/relay#project-id).
 
 ```env
 VITE_PROJECT_ID="WalletConnect Project ID"
