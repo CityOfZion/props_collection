@@ -19,7 +19,7 @@
     "prepublishOnly": "npm run tsc",
     "clean": "rm -rf ./dist",
     "lint": "eslint --fix .",
-    "docsBuild": "typedoc",
+    "docsBuild": "typedoc --out ../front-end/docs",
     "build": "npm run tsc && npm run docsBuild",
     "test": "ts-mocha tests/**/*.spec.ts"
   },

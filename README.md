@@ -37,9 +37,49 @@ a complete integration with the pre-packaged `PROPS` smart contracts.
 
 ## Quickstart
 
+### Clone the repository
+
+```bash
+git clone https://github.com/CityOfZion/props_collection.git
+cd props_collection
+```
+
+### Run the dApp locally
+
+While at the root of the monorepo, run the following commands: 
+```bash
+npm i
+npm run build-sdk
+npm run dev
+```
+You need to `npm run build-sdk` first, because this will build the `sdk` documentation and put it on the `front-end` project.
+
+The `front-end` project also uses the local `sdk-ts` package to format the requests' parameters that will be sent to the blockchain.
+
+> To connect to WalletConnect, you'll need to have an [Project ID](https://docs.reown.com/appkit/vue/cloud/relay#project-id) and add it to your environment. You can create one and configure it [here](https://cloud.reown.com/?utm_source=cloud_banner&utm_medium=docs&utm_campaign=backlinks).
+
+### Build the dApp and preview it
+
+```bash
+npm run build-dapp
+npm run preview
+```
+
 ### For interfacing off-chain
-```json
+
+You can install the `sdk-ts` package with npm or you could use a local copy if you cloned this repository.
+
+```bash
+# installing via npm
 npm install @cityofzion/props-collection
+```
+```json
+// referencing local copy
+{
+  "dependencies": {
+    "@cityofzion/props-collection": "file:path/to/sdk-ts"
+  }
+}
 ```
 
 **To get a Collection**
@@ -68,7 +108,7 @@ const txid = await collection.sampleFromCollection({
 const result = await Utils.transactionCompletion(txid)
 ```
 
-For more examples, refer to the tests directory.
+For more examples, refer to the [tests directory](./sdk-ts/tests/collection.spec.ts).
 
 ### For Interfacing On-Chain
 Add the collections contract to your cpm.yaml file:
