@@ -1,7 +1,7 @@
-import * as propsCollection from '@cityofzion/props-collection'
+import { Collection } from '@cityofzion/props-collection'
 import { u, wallet } from '@cityofzion/neon-js'
 
-type Collection = {
+type CollectionType = {
   id: string
   author: string
   description: string
@@ -10,9 +10,9 @@ type Collection = {
   values: any[]
 }
 
-export const collections: Collection[] = []
+export const collections: CollectionType[] = []
 
-export function cardElement(collection: Collection) {
+export function cardElement(collection: CollectionType) {
   return `
     <div class="col-lg-3 col-6 d-flex align-items-stretch">
         <div type="button" class="card w-100 border-0 overflow-hidden" id="card-${collection.id}" style="height: 188px;"
@@ -35,7 +35,7 @@ function addCollectionsListeners() {
 }
 
 export async function loadCollections() {
-  const propCollection = new propsCollection.Collection({
+  const propCollection = await Collection.init({
     node: import.meta.env.VITE_NETWORK,
     scriptHash: import.meta.env.VITE_CONTRACT_SCRIPT_HASH,
   })
@@ -64,7 +64,7 @@ export function fillExampleCollections() {
   addCollectionsListeners()
 }
 
-function changeOffcanvas(collection: Collection) {
+function changeOffcanvas(collection: CollectionType) {
   const target = document.querySelector('#offcanvasCollection')
 
   const author = <HTMLInputElement>target?.querySelector('input[name=author]')

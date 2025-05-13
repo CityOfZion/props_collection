@@ -1,6 +1,5 @@
 import {
   CollectionAPI,
-  Utils,
   CreateCollection,
   SampleFromRuntimeCollection,
   SampleFromCollection,
@@ -10,6 +9,7 @@ import { u } from '@cityofzion/neon-js'
 import { toastApprovedTx, copyClipboardEvent, toastDanger } from '../helper'
 import UniversalProvider from '@walletconnect/universal-provider'
 import { WalletConnectModal } from '@walletconnect/modal'
+import { NeonEventListener } from '@cityofzion/neon-dappkit'
 
 let wcUniversalProvider: UniversalProvider
 const collectionScriptHash = import.meta.env.VITE_CONTRACT_SCRIPT_HASH
@@ -28,8 +28,8 @@ export const initWalletConnect = async () => {
   wcUniversalProvider = await UniversalProvider.init({
     projectId: import.meta.env.VITE_PROJECT_ID,
     metadata: {
-      name: 'Props Collection',
-      description: 'This dapp demonstrates how to integrate the Props Collection smart contract into web applications.',
+      name: 'PROPS Collection',
+      description: 'This dapp demonstrates how to integrate the PROPS Collection smart contract into web applications.',
       url: 'https://github.com/CityOfZion/props_collection/',
       icons: [new URL(import.meta.env.BASE_URL + 'props_icon.svg', import.meta.url).href],
     },
@@ -209,12 +209,12 @@ async function showTxResults(txId: string, parseStackResult: (x: any) => string)
   let appLog
 
   try {
-    appLog = await Utils.transactionCompletion(txId, { node: import.meta.env.VITE_NETWORK })
+    appLog = await new NeonEventListener(import.meta.env.VITE_NETWORK).waitForApplicationLog(txId)
   } catch (error: any) {
     throw new Error(error)
   }
 
-  const results = appLog!.log.executions[0]
+  const results = appLog.executions[0]
 
   const offcanvasElement = document.querySelector('#offcanvasResult')
   if (offcanvasElement) {
