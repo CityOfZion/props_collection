@@ -4,4 +4,5 @@ contract/venv
 __pycache__
 .env.*.local
 .DS_Store
+dist
 docs
