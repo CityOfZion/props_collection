@@ -37,6 +37,8 @@ $form-check-input-border: 0;
 $form-check-input-bg: #32323D;
 $form-switch-color: #67728E;
 
+$form-select-indicator-color: $primary;
+
 $badge-padding-x: 1.5em;
 
 $toast-font-size: 16px;
@@ -49,7 +51,8 @@ textarea {
 }
 
 input[type="text"],
-input[type="number"]{
+input[type="number"], 
+select {
     @extend .form-control, .bg-dark, .border-0, .mb-4, .text-white;
 }
 

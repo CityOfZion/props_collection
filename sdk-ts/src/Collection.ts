@@ -144,7 +144,7 @@ export class Collection {
   /**
    * Gets a JSON formatting collection from the smart contract.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
+   * @param params.collectionId The collectionID being requested..
    *
    * @returns The requested collection.
    */
@@ -165,7 +165,7 @@ export class Collection {
    * Gets the bytestring representation of the collection. This is primarily used for inter-contract interfacing,
    * but we include it here for completeness.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
+   * @param params.collectionId The collectionID being requested.
    *
    * @returns The bytestring representation of the collection.
    */
@@ -185,7 +185,7 @@ export class Collection {
   /**
    * Returns the value of a collection from a requested index.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
+   * @param params.collectionId The collectionID being requested.
    * @param params.index The index of the array element being requested.
    *
    * @returns The value of the collection element.
@@ -206,7 +206,7 @@ export class Collection {
   /**
    * Gets the array length of a requested collection.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
+   * @param params.collectionId The collectionID being requested.
    *
    * @returns The length of the collection.
    */
@@ -226,7 +226,7 @@ export class Collection {
   /**
    * Gets the values of a collection, omitting the metadata.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
+   * @param params.collectionId The collectionID being requested.
    *
    * @returns The values in the collection.
    */
@@ -252,7 +252,7 @@ export class Collection {
    * sampling from a distribution, use {@link getCollectionLength} in combination with {@link getCollectionElement} or
    * {@link sampleFromCollection}.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
+   * @param params.collectionId The collectionID being requested.
    * @param params.entropy Bytes to use for the mapping.
    * @param {InvocationOptions} [opts]
    * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
@@ -278,7 +278,7 @@ export class Collection {
    * sampling from a distribution, use {@link getCollectionLength} in combination with {@link getCollectionElement} or
    * {@link sampleFromCollection}.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
+   * @param params.collectionId The collectionID being requested.
    * @param params.entropy Bytes to use for the mapping.
    * @param {InvocationOptions} [opts]
    * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
@@ -303,10 +303,10 @@ export class Collection {
   }
 
   /**
-   * Samples a uniform random value from the collection using a Contract.Call to the {@link https://github.com/CityOfZion/props_dice | Dice} contract.
+   * Samples a uniform random value from the collection using a Contract. Call to the {@link https://github.com/CityOfZion/props_dice | Dice} contract.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
-   * @param params.samples The number of samples to return
+   * @param params.collectionId The collectionID being requested.
+   * @param params.samples The number of samples to to take from the collection.
    * @param {InvocationOptions} [opts]
    * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
    * This property only affects synchronous methods.
@@ -325,8 +325,8 @@ export class Collection {
    * Samples a uniform random value from the collection using a Contract.Call to the {@link https://github.com/CityOfZion/props_dice | Dice} contract,
    * and waits for the transaction to be completed.
    *
-   * @param params.collectionId The collectionID being requested. Refer to {@link https://props.coz.io} for a formatted list.
-   * @param params.samples The number of samples to return
+   * @param params.collectionId The collectionID being requested.
+   * @param params.samples The number of samples to return.
    * @param {InvocationOptions} [opts]
    * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
    * This property only affects synchronous methods.
@@ -353,8 +353,8 @@ export class Collection {
    * Samples uniformly from a collection provided at the time of invocation. Users have the option to 'pick', which
    * prevents a value from being selected multiple times. The results are published as outputs on the transaction.
    *
-   * @param params.values an array of values to sample from
-   * @param params.samples the number of samples to fairly select from the values
+   * @param params.values an array of values to sample from.
+   * @param params.samples the number of samples to fairly select from the values.
    * @param params.pick Are selected values removed from the list of options for future samples?
    * @param {InvocationOptions} [opts]
    * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.
@@ -375,8 +375,8 @@ export class Collection {
    * Users have the option to 'pick', which prevents a value from being selected multiple times.
    * The results are published as outputs on the transaction.
    *
-   * @param params.values an array of values to sample from
-   * @param params.samples the number of samples to fairly select from the values
+   * @param params.values an array of values to sample from.
+   * @param params.samples the number of samples to fairly select from the values.
    * @param params.pick Are selected values removed from the list of options for future samples?
    * @param {InvocationOptions} [opts]
    * @param opts.timeout A number value in microseconds indicating how long the function should wait for the transaction to be completed.

@@ -35,22 +35,28 @@ function addCollectionsListeners() {
 }
 
 export async function loadCollections() {
-  const propCollection = await Collection.init({
+  const propsCollection = await Collection.init({
     node: import.meta.env.VITE_NETWORK,
     scriptHash: import.meta.env.VITE_CONTRACT_SCRIPT_HASH,
   })
 
-  const totalCollections = await propCollection.totalCollections()
+  const totalCollections = await propsCollection.totalCollections()
 
+  const getCollectionPromises = []
   for (const x of Array(totalCollections).keys()) {
     const collectionId = x + 1
 
-    collections.push(
-      await propCollection.getCollectionJSON({
-        collectionId,
-      })
-    )
+    getCollectionPromises.push(async () => {
+      collections.push(
+        await propsCollection.getCollectionJSON({
+          collectionId,
+        })
+      )
+    })
   }
+  await Promise.all(getCollectionPromises.map(p => p()))
+
+  collections.sort((a, b) => (a.id < b.id ? -1 : 1))
 }
 
 export function fillExampleCollections() {

@@ -5,11 +5,10 @@ import {
   SampleFromCollection,
 } from '@cityofzion/props-collection'
 import { Offcanvas } from 'bootstrap'
-import { u } from '@cityofzion/neon-js'
 import { toastApprovedTx, copyClipboardEvent, toastDanger } from '../helper'
 import UniversalProvider from '@walletconnect/universal-provider'
 import { WalletConnectModal } from '@walletconnect/modal'
-import { NeonEventListener } from '@cityofzion/neon-dappkit'
+import { NeonEventListener, NeonParser } from '@cityofzion/neon-dappkit'
 
 let wcUniversalProvider: UniversalProvider
 const collectionScriptHash = import.meta.env.VITE_CONTRACT_SCRIPT_HASH
@@ -60,21 +59,7 @@ async function connectWc() {
     await wcUniversalProvider.connect({
       namespaces: {
         neo3: {
-          methods: [
-            'invokeFunction',
-            'testInvoke',
-            'signMessage',
-            'verifyMessage',
-            'getWalletInfo',
-            'traverseIterator',
-            'getNetworkVersion',
-            'encrypt',
-            'decrypt',
-            'decryptFromArray',
-            'calculateFee',
-            'signTransaction',
-            'wipeRequests',
-          ],
+          methods: ['invokeFunction', 'testInvoke', 'signMessage', 'verifyMessage', 'calculateFee', 'signTransaction'],
           chains: [networkType],
           events: [],
         },
@@ -125,7 +110,9 @@ async function sampleFromCollection(params: SampleFromCollection): Promise<[stri
   )
 
   const convertReturn = (resultsStack: any) => {
-    const resultsString = (resultsStack.value! as []).map((stackItem: any) => u.base642utf8(stackItem.value)).join(', ')
+    const resultsString = (resultsStack.value! as [])
+      .map((stackItem: any) => NeonParser.parseRpcResponse(stackItem))
+      .join(', ')
     return resultsString
   }
 
@@ -149,7 +136,9 @@ async function sampleFromRuntimeCollection(
   )
 
   const convertReturn = (resultsStack: any) => {
-    const resultsString = (resultsStack.value! as []).map((stackItem: any) => u.base642utf8(stackItem.value)).join(', ')
+    const resultsString = (resultsStack.value! as [])
+      .map((stackItem: any) => NeonParser.parseRpcResponse(stackItem))
+      .join(', ')
     return resultsString
   }
 
@@ -252,7 +241,10 @@ function addWcEventListeners() {
 
     try {
       const description = (<HTMLInputElement>target?.querySelector('input[name=description]')).value
-      const collectionType = (<HTMLInputElement>target?.querySelector('input[name=collection-type]')).value
+      const collectionTypeDiv = target?.querySelector('#create-collection-type')
+      const collectionTypeSelect = (<HTMLSelectElement>collectionTypeDiv?.querySelector('select')).value
+      const collectionTypeInput = (<HTMLInputElement>collectionTypeDiv?.querySelector('input')).value
+      const collectionType = collectionTypeSelect === 'Other' ? collectionTypeInput : collectionTypeSelect
       const extra = (<HTMLInputElement>target?.querySelector('input[name=extra]')).value
       const values = (<HTMLTextAreaElement>target?.querySelector('textarea[name=values]')).value
         .split(',')
@@ -280,7 +272,10 @@ function addWcEventListeners() {
     const target = document.querySelector('#form-sample-collection')
 
     try {
-      const collectionId = (<HTMLInputElement>target?.querySelector('input[name=collection-id]')).value
+      const collectionId = (<HTMLInputElement>target?.querySelector('select[name=collection-id]')).value.replace(
+        /^0+/,
+        ''
+      )
       const samples = (<HTMLInputElement>target?.querySelector('input[name=sample-count]')).value
 
       changeInvokeButton(target, ButtonStage.WaitWallet)

@@ -2,8 +2,14 @@ npm install @cityofzion/props-collection --save
 --------------------------------
 import { Collection } from '@cityofzion/props-collection'
 
-const node = "https://mainnet1.neo.coz.io:443"                   // refer to dora.coz.io/monitor for a list of nodes.
-const scriptHash = "0xf05651bc505fd5c7d36593f6e8409932342f9085"  // if you are using a different network, the script hash might be different
-const account = wallet.Account()                                 // need to use an account with funds to persist the invokes
-const collection = await Collection.init({ node, scriptHash, account })
+// refer to dora.coz.io/monitor for a list of nodes.
+const node = "https://mainnet1.neo.coz.io:443"
+
+// if you are using a different network, the script hash might be different
+const contractHash = "0xf05651bc505fd5c7d36593f6e8409932342f9085"
+
+// need to use an account with funds to persist the invokes
+const account = new wallet.Account("L3tgppXLgdaeqSGSFw1Go3skBiy8vQAM7YMXvTHsKQtE16PBncSU")
+
+const collectionContract = await Collection.init({ node, scriptHash: contractHash, account })
 ...

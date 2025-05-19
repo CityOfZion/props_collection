@@ -1,13 +1,24 @@
 import './scss/styles.scss'
 import 'bootstrap'
 import { fillExampleCollections, loadCollections } from './collections'
-import { loadLanguagesExample } from './quickstart'
+import { renderLanguagesExample } from './quickstart'
 import { initWalletConnect } from './wallet-connect'
+import { initOffcanvas, renderOffcanvas } from './offcanvas'
+import { initTooltips } from './helper'
 
-initWalletConnect()
+async function renderComponents() {
+  await renderLanguagesExample()
+  await renderOffcanvas()
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-  await loadLanguagesExample()
-  await loadCollections()
+  await renderComponents()
 
+  initWalletConnect()
+
+  await loadCollections()
   fillExampleCollections()
+
+  initOffcanvas()
+  initTooltips()
 })

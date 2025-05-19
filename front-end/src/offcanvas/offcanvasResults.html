@@ -1,0 +1,26 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasResult" aria-labelledby="offcanvasResultLabel">
+  <div class="offcanvas-header">
+    <div class="offcanvas-title" id="offcanvasResultLabel">Result</div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form>
+      <div class="mb-3">
+        <label class="form-label">VM State:</label>
+        <div type="text" class="form-control bg-dark border-0 mb-4" aria-label="VM State">
+          <span name="vm-state"></span>
+        </div>
+        <label class="form-label">Transaction Fee:</label>
+        <input readonly name="transaction-fee" type="text" aria-label="Transaction Fee">
+        <label class="form-label">Result:</label>
+        <div class="position-relative">
+          <textarea readonly name="result" type="text" aria-label="Result">
+                </textarea>
+          <button id="copy-results" class="position-absolute top-0 end-0 mt-3 me-3 btn bg-transparent">
+            <img src="/copy_icon.svg">
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

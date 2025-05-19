@@ -36,9 +36,9 @@ This front-end package demonstrates how to integrate the PROPS Collection smart 
 
 ### Prerequisites
 
-- Node.js 20 or higher
+- [Node.js](https://nodejs.org/en/download) 20 or higher
 - npm 10 or higher
-- A WalletConnect/Reown project ID
+- A WalletConnect/Reown [Project ID](https://docs.reown.com/appkit/vue/cloud/relay#project-id)
 
 ### Setup
 

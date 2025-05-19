@@ -13,7 +13,7 @@
 
 ## Overview
 
-The PROPS Collection SDK provides a TypeScript interface for interacting with PROPS Collection smart contracts on the Neo N3 blockchain. It simplifies the process of creating, managing, and sampling from collections in your dApps.
+The PROPS Collection SDK provides a TypeScript interface for interacting with PROPS Collection smart contracts on the Neo N3 blockchain. It simplifies the process of creating, and sampling from collections in your dApps.
 
 ## Features
 
@@ -26,8 +26,10 @@ The PROPS Collection SDK provides a TypeScript interface for interacting with PR
 
 ### Prerequisites
 
-- Node.js 20 or higher
+- [Node.js](https://nodejs.org/en/download) 20 or higher
 - npm 10 or higher
+- [CPM](https://github.com/CityOfZion/cpm)
+- [Neo-Express](https://github.com/neo-project/neo-express)
 
 ### Setup
 
@@ -68,16 +70,21 @@ const samples = await collection.sampleFromCollectionSync({
 
 ### Testing
 
-Before testing locally, you need to have the PROPS Collection and PROPS Dice smart contracts on your private chain. 
+Before testing locally, ensure that the PROPS Collection and PROPS Dice smart contracts are deployed on your private chain.
+The Dice smart contract is required, because Collection uses it to randomly sample collections.
 
-Use [CPM](https://github.com/CityOfZion/cpm) with the config file at [`contract`](../contract/cpm.yaml) to download Dice and Collection to your private chain at [`default.neo-express`](../default.neo-express).
+#### Setting Up the Contracts
+
+Use [CPM](https://github.com/CityOfZion/cpm) with the config file at the contract project to download Dice and Collection to your private chain at `default.neo-express`.
 
 ```bash
 cd ../contract
 cpm run
 ```
 
-Then run the following commands at the repository root:
+#### Preparing the Private Blockchain
+
+After deploying the contracts, set up the private blockchain with Neo-Express by running the following commands at the repository root:
 
 ```bash
 # Add some funds to the testing account
@@ -87,7 +94,9 @@ neoxp transfer 1000 GAS genesis NPtWsZzf32C1J6tDrWFsDnNwN1d8HSEPaS -i default.ne
 neoxp run -i default.neo-express -s 3 -d
 ```
 
-Finally, run the test command at this project:
+#### Running the Tests
+
+Once the private blockchain is running, run the test command at this project:
 
 ```bash
 # Run all tests
