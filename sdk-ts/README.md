@@ -88,7 +88,7 @@ After deploying the contracts, set up the private blockchain with Neo-Express by
 
 ```bash
 # Add some funds to the testing account
-neoxp transfer 1000 GAS genesis NPtWsZzf32C1J6tDrWFsDnNwN1d8HSEPaS -i default.neo-express
+neoxp transfer 1000 GAS genesis TestAccount -i default.neo-express
 
 # Run the private blockchain while generating blocks faster and discarding changes after exiting
 neoxp run -i default.neo-express -s 3 -d
@@ -101,4 +101,35 @@ Once the private blockchain is running, run the test command at this project:
 ```bash
 # Run all tests
 npm run test
+```
+
+#### Testing a local version of the contract
+
+If you want to test a local version of the contract, you can compile the contract and then deploy it to your private chain using the following commands:
+
+```bash
+# Build the contract
+neo3-boa compile ../contract/collection.py
+
+# Deploy the contract to your private chain
+neoxp contract deploy ../contract/collection.nef TestAccount -i ../default.neo-express --force
+```
+
+Running the deploy command will output the script hash of the contract, it will be different from the contract that CPM got. You can then use this new script hash in your tests when initializing the Collection SDK:
+
+```typescript
+// sdk-ts/tests/collection.spec.ts
+
+describe('Basic Collection Test Suite', function () {
+// ...
+  before(async function () {
+    // create a new class instance
+    collection = await Collection.init({
+      node, // change this if you want to connect to mainnet
+      account,
+      scriptHash: '0xfaf64c31ac9f580bf4d1d7ca34335567da907706',
+    })
+  })
+// ...
+})
 ```
