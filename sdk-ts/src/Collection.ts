@@ -30,7 +30,7 @@ const TIMEOUT = 60000
  * library for static data. This class exposes the interface along with a number of helpful features to make the smart
  * contract easy to use for typescript developers.
  *
- * Use the `init` method to create a new Dice object. All of the PROPS smart contract interface classes will need a node rpc address, scripthash, account, `Neo3Invoker`,
+ * Use the `init` method to create a new Collection object. All of the PROPS smart contract interface classes will need a node rpc address, scripthash, account, `Neo3Invoker`,
  * `Neo3Parser`, and `Neo3EventListener` to be initialized.
  * Those parameters are optional, and if not provided, the default values interfacing with the MainNet will be used.
  *
@@ -127,10 +127,7 @@ export class Collection {
    * @returns The new collection ID.
    */
   async createCollectionSync(params: CreateCollection, opts?: InvocationOptions): Promise<number> {
-    const txId = await this.invoker.invokeFunction({
-      invocations: [CollectionAPI.createCollection(this.scriptHash, params)],
-      signers: [],
-    })
+    const txId = await this.createCollection(params, opts)
 
     const resp = await this.listener.waitForApplicationLog(txId, opts?.timeout ?? TIMEOUT)
 
@@ -288,10 +285,7 @@ export class Collection {
    * with a published transaction.
    */
   async mapBytesOntoCollectionSync(params: MapBytesOntoCollection, opts?: InvocationOptions): Promise<any> {
-    const txId = await this.invoker.invokeFunction({
-      invocations: [CollectionAPI.mapBytesOntoCollection(this.scriptHash, params)],
-      signers: [],
-    })
+    const txId = await this.mapBytesOntoCollection(params, opts)
 
     const resp = await this.listener.waitForApplicationLog(txId, opts?.timeout ?? TIMEOUT)
 
@@ -335,10 +329,7 @@ export class Collection {
    * with a published transaction.
    */
   async sampleFromCollectionSync(params: SampleFromCollection, opts?: InvocationOptions): Promise<any[]> {
-    const txId = await this.invoker.invokeFunction({
-      invocations: [CollectionAPI.sampleFromCollection(this.scriptHash, params)],
-      signers: [],
-    })
+    const txId = await this.sampleFromCollection(params, opts)
 
     const resp = await this.listener.waitForApplicationLog(txId, opts?.timeout ?? TIMEOUT)
 
@@ -386,10 +377,7 @@ export class Collection {
    * with a published transaction.
    */
   async sampleFromRuntimeCollectionSync(params: SampleFromRuntimeCollection, opts?: InvocationOptions): Promise<any[]> {
-    const txId = await this.invoker.invokeFunction({
-      invocations: [CollectionAPI.sampleFromRuntimeCollection(this.scriptHash, params)],
-      signers: [],
-    })
+    const txId = await this.sampleFromRuntimeCollection(params, opts)
 
     const resp = await this.listener.waitForApplicationLog(txId, opts?.timeout ?? TIMEOUT)
 
@@ -428,7 +416,7 @@ export class Collection {
    *
    * @returns A transaction ID. Refer to {@link https://github.com/CityOfZion/neon-dappkit/blob/071e35ad13e8c5f705a01ea655cb05b1aa1eb928/packages/neon-dappkit/test/NeonParser.spec.ts#L206 NeonParser.parseRpcResponse} for parsing the response.
    */
-  async update(params: Update, opts?: InvocationOptions): Promise<string | void> {
+  async update(params: Update, opts?: InvocationOptions): Promise<string> {
     return await this.invoker.invokeFunction({
       invocations: [CollectionAPI.update(this.scriptHash, params)],
       signers: [],
@@ -444,12 +432,13 @@ export class Collection {
    *
    * @returns Nothing if the update succeeds.
    */
-  async updateSync(params: Update, opts?: InvocationOptions): Promise<string | void> {
-    const txId = await this.invoker.invokeFunction({
-      invocations: [CollectionAPI.update(this.scriptHash, params)],
-      signers: [],
-    })
+  async updateSync(params: Update, opts?: InvocationOptions): Promise<void> {
+    const txId = await this.update(params, opts)
 
-    await this.listener.waitForApplicationLog(txId, opts?.timeout ?? TIMEOUT)
+    const resp = await this.listener.waitForApplicationLog(txId, opts?.timeout ?? TIMEOUT)
+
+    if (resp.executions[0].vmstate !== 'HALT') {
+      throw new Error('unrecognized response')
+    }
   }
 }
