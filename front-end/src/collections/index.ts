@@ -1,7 +1,7 @@
-import * as propsCollection from '@cityofzion/props-collection'
+import { Collection } from '@cityofzion/props-collection'
 import { u, wallet } from '@cityofzion/neon-js'
 
-type Collection = {
+type CollectionType = {
   id: string
   author: string
   description: string
@@ -10,9 +10,9 @@ type Collection = {
   values: any[]
 }
 
-export const collections: Collection[] = []
+export const collections: CollectionType[] = []
 
-export function cardElement(collection: Collection) {
+export function cardElement(collection: CollectionType) {
   return `
     <div class="col-lg-3 col-6 d-flex align-items-stretch">
         <div type="button" class="card w-100 border-0 overflow-hidden" id="card-${collection.id}" style="height: 188px;"
@@ -35,22 +35,28 @@ function addCollectionsListeners() {
 }
 
 export async function loadCollections() {
-  const propCollection = new propsCollection.Collection({
+  const propsCollection = await Collection.init({
     node: import.meta.env.VITE_NETWORK,
     scriptHash: import.meta.env.VITE_CONTRACT_SCRIPT_HASH,
   })
 
-  const totalCollections = await propCollection.totalCollections()
+  const totalCollections = await propsCollection.totalCollections()
 
+  const getCollectionPromises = []
   for (const x of Array(totalCollections).keys()) {
     const collectionId = x + 1
 
-    collections.push(
-      await propCollection.getCollectionJSON({
-        collectionId,
-      })
-    )
+    getCollectionPromises.push(async () => {
+      collections.push(
+        await propsCollection.getCollectionJSON({
+          collectionId,
+        })
+      )
+    })
   }
+  await Promise.all(getCollectionPromises.map(p => p()))
+
+  collections.sort((a, b) => (a.id < b.id ? -1 : 1))
 }
 
 export function fillExampleCollections() {
@@ -64,7 +70,7 @@ export function fillExampleCollections() {
   addCollectionsListeners()
 }
 
-function changeOffcanvas(collection: Collection) {
+function changeOffcanvas(collection: CollectionType) {
   const target = document.querySelector('#offcanvasCollection')
 
   const author = <HTMLInputElement>target?.querySelector('input[name=author]')

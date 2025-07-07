@@ -1,4 +1,4 @@
-import { Toast } from 'bootstrap'
+import { Toast, Tooltip } from 'bootstrap'
 
 export function copyClipboardEvent(text: string) {
   return (event: Event) => {
@@ -23,4 +23,9 @@ export function toastDanger(text: string) {
   toastEl.querySelector('.toast-body')!.innerHTML = text
   const toast = Toast.getOrCreateInstance(toastEl)
   toast.show()
+}
+
+export function initTooltips() {
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  tooltipTriggerList.forEach(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
 }

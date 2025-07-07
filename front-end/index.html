@@ -6,7 +6,7 @@
   <link rel="icon" type="image/svg+xml" href="/coz_favicon.ico" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Props Collection</title>
+  <title>PROPS Collection</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -75,7 +75,10 @@
 
     <div id="collection-description-section" style="margin-bottom: 54px;">
       <h2>Collections</h2>
-      <p class="fs-5 fw-light">A complete dApp template for storing and sampling from static on-chain data.</p>
+      <p class="fs-5 fw-light">
+        A complete dApp template that provides developers with the tools they need to deliver complex on-chain routines, 
+        simplifying the process of creating, and sampling from collections in your dApps.
+      </p>
     </div>
 
     <div id="quickstart-section" style="margin-bottom: 74px;">
@@ -148,115 +151,6 @@
         <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasSampleRuntime" aria-controls="offcanvasSampleRuntime">Sample from Runtime
           collection</button>
-      </div>
-
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCreate" aria-labelledby="offcanvasCreateLabel">
-        <div class="offcanvas-header flex-column">
-          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          <div class="offcanvas-title" id="offcanvasCreateLabel">Create Collection</div>
-          <div class="text-white-50 fw-light fs-5 mt-1">Enter the details for your new collection</div>
-        </div>
-        <div class="offcanvas-body">
-          <form id="form-create-collection">
-            <div class="mb-3">
-              <label class="form-label">Description</label>
-              <input name="description" type="text" class="text-white" aria-label="Description">
-              <label class="form-label">Collection Type</label>
-              <input name="collection-type" type="text" class="text-white" aria-label="Collection Type">
-              <label class="form-label">Extra</label>
-              <input name="extra" type="text" class="text-white" aria-label="Extra">
-              <label class="form-label d-flex gap-1">Values<div class="text-white-50 fw-lighter">(CSV formatted)</div>
-              </label>
-              <textarea name="values" aria-label="Values"></textarea>
-            </div>
-            <div style="margin-top: 20px;" class="d-flex justify-content-end">
-              <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Create</button>
-              <button name="btn-disabled" style="width: 360px;" disabled
-                class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSample" aria-labelledby="offcanvasSampleLabel">
-        <div class="offcanvas-header flex-column">
-          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          <div class="offcanvas-title" id="offcanvasSampleLabel">Sample from collection</div>
-        </div>
-        <div class="offcanvas-body">
-          <form id="form-sample-collection">
-            <div class="mb-3">
-              <label class="form-label">Collection ID</label>
-              <input name="collection-id" type="text" class="text-white" aria-label="Collection ID">
-              <label class="form-label">Sample count</label>
-              <input name="sample-count" type="number" class="text-white" aria-label="Collection ID">
-            </div>
-            <div style="margin-top: 20px;" class="d-flex justify-content-end">
-              <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Sample</button>
-              <button name="btn-disabled" style="width: 360px;" disabled
-                class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSampleRuntime"
-        aria-labelledby="offcanvasSampleRuntimeLabel">
-        <div class="offcanvas-header flex-column">
-          <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          <div class="offcanvas-title" id="offcanvasSampleRuntimeLabel">Sample from Runtime collection</div>
-        </div>
-        <div class="offcanvas-body">
-          <form id="form-sample-runtime-collection">
-            <div class="mb-3">
-              <label class="form-label d-flex gap-1">Values<div class="fs-14px fw-lighter align-self-end">(CSV
-                  formatted)</div>
-              </label>
-              <textarea name="values" aria-label="Values"></textarea>
-
-              <label class="form-label">Sample count</label>
-              <input name="sample-count" type="number" class="text-white" aria-label="Sample count">
-
-              <div class="form-check form-switch form-check-reverse d-flex">
-                <label class="form-check-label" for="sampleRuntimeSwitch">Pick</label>
-                <input class="form-check-input ms-auto form-switch-lg" type="checkbox" role="switch" name="switch"
-                  id="sampleRuntimeSwitch">
-              </div>
-            </div>
-            <div style="margin-top: 20px;" class="d-flex justify-content-end">
-              <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Sample</button>
-              <button name="btn-disabled" style="width: 360px;" disabled
-                class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasResult" aria-labelledby="offcanvasResultLabel">
-        <div class="offcanvas-header">
-          <div class="offcanvas-title" id="offcanvasResultLabel">Result</div>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <form id="form-sample-collection">
-            <div class="mb-3">
-              <label class="form-label">VM State:</label>
-              <div type="text" class="form-control bg-dark border-0 mb-4" aria-label="VM State">
-                <span name="vm-state"></span>
-              </div>
-              <label class="form-label">Transaction Fee:</label>
-              <input readonly name="transaction-fee" type="text" aria-label="Transaction Fee">
-              <label class="form-label">Result:</label>
-              <div class="position-relative">
-                <textarea readonly name="result" type="text" aria-label="Result">
-                </textarea>
-                <button id="copy-results" class="position-absolute top-0 end-0 mt-3 me-3 btn bg-transparent">
-                  <img src="/copy_icon.svg">
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
       </div>
 
     </div>

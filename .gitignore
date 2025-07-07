@@ -1,7 +1,9 @@
 node_modules
 contract/venv
 .idea
+.vscode
 __pycache__
 .env.*.local
 .DS_Store
+dist
 docs

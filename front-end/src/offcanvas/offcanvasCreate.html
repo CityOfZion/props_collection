@@ -1,0 +1,41 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCreate" aria-labelledby="offcanvasCreateLabel">
+  <div class="offcanvas-header flex-column">
+    <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="offcanvas-title" id="offcanvasCreateLabel">Create Collection</div>
+    <div class="text-white-50 fw-light fs-5 mt-1">Enter the details for your new collection</div>
+  </div>
+  <div class="offcanvas-body">
+    <form id="form-create-collection">
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <input name="description" type="text" class="text-white" aria-label="Description" data-bs-toggle="tooltip" data-bs-title="A brief description of the collection">
+        <label class="form-label">Collection Type</label>
+        <div class="input-group mb-3 flex-column" id="create-collection-type">
+          <select class="form-select w-100" aria-label="Select collection type">
+            <option value="String" selected>String</option>
+            <option value="Integer">Integer</option>
+            <option value="Boolean">Boolean</option>
+            <option value="Hash160">Hash160</option>
+            <option value="Hash256">Hash256</option>
+            <option value="ByteArray">ByteArray</option>
+            <option value="PublicKey">PublicKey</option>
+            <option value="Array">Array</option>
+            <option value="Any">Any</option>
+            <option value="Other">Other</option>
+          </select>
+          <input name="collection-type" type="text" class="text-white w-100 d-none" disabled aria-label="Collection Type">
+        </div>
+        <label class="form-label">Extra</label>
+        <input name="extra" type="text" class="text-white" aria-label="Extra" data-bs-toggle="tooltip" data-bs-title="A option field for supplemental data">
+        <label class="form-label d-flex gap-1">Values<div class="text-white-50 fw-lighter">(CSV formatted)</div>
+        </label>
+        <textarea name="values" aria-label="Values" data-bs-toggle="tooltip" data-bs-title="The values that will populate the collection. Use commas to separate the values"></textarea>
+      </div>
+      <div style="margin-top: 20px;" class="d-flex justify-content-end">
+        <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Create</button>
+        <button name="btn-disabled" style="width: 360px;" disabled
+          class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
+      </div>
+    </form>
+  </div>
+</div>

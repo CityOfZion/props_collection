@@ -13,7 +13,7 @@
 
 ## Overview
 
-This front-end package demonstrates how to integrate the Props Collection smart contract into web applications. Showcasing real-world usage of the Props Collection SDK.
+This front-end package demonstrates how to integrate the PROPS Collection smart contract into web applications. Showcasing real-world usage of the PROPS Collection SDK.
 
 ### Technologies Used
 
@@ -21,11 +21,11 @@ This front-end package demonstrates how to integrate the Props Collection smart 
 - Vite
 - Bootstrap 5
 - SASS
-- WalletConnect SDK
+- WalletConnect/Reown SDK
 
 ## Features
 
-- Connect with Neo N3 wallets via WalletConnect
+- Connect with Neo N3 wallets via WalletConnect/Reown
 - Create and manage collections
 - Runtime sampling from collections
 - Runtime collection sampling
@@ -36,9 +36,9 @@ This front-end package demonstrates how to integrate the Props Collection smart 
 
 ### Prerequisites
 
-- Node.js 20 or higher
+- [Node.js](https://nodejs.org/en/download) 20 or higher
 - npm 10 or higher
-- A WalletConnect project ID
+- A WalletConnect/Reown [Project ID](https://docs.reown.com/appkit/vue/cloud/relay#project-id)
 
 ### Setup
 
@@ -58,8 +58,8 @@ npm run preview
 
 ### Environment Variables
 
-Change the variables at the `.env` file, you won't be able to connect with WalletConnect if you don't add a [Project ID](https://docs.reown.com/appkit/vue/cloud/relay#project-id).
+Change the variables at the [`.env.development`](front-end/.env.development) and [`.env.production`](front-end/.env.production) files, you won't be able to connect with WalletConnect/Reown if you don't add a [Project ID](https://docs.reown.com/appkit/vue/cloud/relay#project-id).
 
 ```env
-VITE_PROJECT_ID="WalletConnect Project ID"
+VITE_PROJECT_ID="WalletConnect/Reown Project ID"
 ```

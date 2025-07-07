@@ -4,7 +4,7 @@
     width="200px;"></img>
 </p>
 
-<h1 align="center">PROPS</h1>
+<h1 align="center">PROPS Collection</h1>
 
 <p align="center">
   General purpose smart contracts and developer framework for Neo N3
@@ -32,7 +32,7 @@ source ([boa](https://github.com/CityOfZion/neo3-boa)) and compiled version of t
 
 ### sdk-*
 In addition to the smart contract, this project includes a complete, well documented SDK which outlines best practices for
-integrating with smart contracts in the Neo N3 ecosystem for off-chain applications.  The SDK includes many design patterns and parsing examples as well as
+integrating with smart contracts in the Neo N3 ecosystem for off-chain applications. The SDK includes many design patterns and parsing examples as well as
 a complete integration with the pre-packaged `PROPS` smart contracts.
 
 ## Quickstart
@@ -56,7 +56,7 @@ You need to `npm run build-sdk` first, because this will build the `sdk` documen
 
 The `front-end` project also uses the local `sdk-ts` package to format the requests' parameters that will be sent to the blockchain.
 
-> To connect to WalletConnect, you'll need to have an [Project ID](https://docs.reown.com/appkit/vue/cloud/relay#project-id) and add it to your environment. You can create one and configure it [here](https://cloud.reown.com/?utm_source=cloud_banner&utm_medium=docs&utm_campaign=backlinks).
+> To connect to WalletConnect, you'll need to have an [Project ID](https://docs.reown.com/appkit/vue/cloud/relay#project-id) and add it to your environments ([dev](front-end/.env.development) and [prod](front-end/.env.production)). You can create one and configure it [here](https://cloud.reown.com/?utm_source=cloud_banner&utm_medium=docs&utm_campaign=backlinks).
 
 ### Build the dApp and preview it
 
@@ -86,32 +86,36 @@ npm install @cityofzion/props-collection
 ```ts
 import { Collection } from '@cityofzion/props-collection'
 
-const collection = new Collection()
+const collection = await Collection.init({
+  node: "https://mainnet1.neo.coz.io:443"
+})
 
 const collectionJSON = await collection.getCollectionJSON({
-    collectionId: 1
+  collectionId: 1
 })
 console.log(collectionJSON)
 ```
 
 **To sample from a Collection**
 ```ts
-import { Collection, Utils } from '@cityofzion/props-collection'
+import { Collection } from '@cityofzion/props-collection'
+import { wallet } from '@cityofzion/neon-js'
 
-const collection = new Collection({
-    account: new Neon.wallet.Account('{{YOUR_WIF}}')
+const collection = await Collection.init({
+  node: "https://mainnet1.neo.coz.io:443"
+  account: new wallet.Account('{{YOUR_WIF}}')
 })
 
-const txid = await collection.sampleFromCollection({
-    collectionId: 1
+const samples = await collection.sampleFromCollectionSync({
+  collectionId: 1,
+  samples: 5
 })
-const result = await Utils.transactionCompletion(txid)
 ```
 
 For more examples, refer to the [tests directory](./sdk-ts/tests/collection.spec.ts).
 
 ### For Interfacing On-Chain
-Add the collections contract to your cpm.yaml file:
+Add the collection contract to your cpm.yaml file:
 ```
 cpm download contract -c 0xf05651bc505fd5c7d36593f6e8409932342f9085 -n mainnet -s
 cpm run

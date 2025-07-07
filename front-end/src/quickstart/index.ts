@@ -3,7 +3,7 @@ import typescriptTextFile from './codeTypescript.txt?raw'
 import boaTextFile from './codeBoa.txt?raw'
 import cpmTextFile from './codeCPM.txt?raw'
 
-async function loadTypeScriptExample() {
+async function renderTypeScriptExample() {
   try {
     const codeElement = document.getElementById('code-typescript')
     if (codeElement) {
@@ -16,7 +16,7 @@ async function loadTypeScriptExample() {
   }
 }
 
-async function loadBoaExample() {
+async function renderBoaExample() {
   try {
     const codeElement = document.getElementById('code-boa')
     if (codeElement) {
@@ -29,7 +29,7 @@ async function loadBoaExample() {
   }
 }
 
-async function loadCPMExample() {
+async function renderCPMExample() {
   try {
     const codeElement = document.getElementById('code-cpm')
     if (codeElement) {
@@ -42,8 +42,8 @@ async function loadCPMExample() {
   }
 }
 
-export async function loadLanguagesExample() {
-  loadTypeScriptExample()
-  loadBoaExample()
-  loadCPMExample()
+export async function renderLanguagesExample() {
+  renderTypeScriptExample()
+  renderBoaExample()
+  renderCPMExample()
 }
