@@ -1,0 +1,6 @@
+cpm download contract -c 0xf05651bc505fd5c7d36593f6e8409932342f9085 -n mainnet
+--------------------------------
+from cpm_out.collection.contract import Collection
+
+samples: List = Collection.sample_from_collection(1, 5)
+...

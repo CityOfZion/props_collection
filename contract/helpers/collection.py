@@ -1,8 +1,8 @@
 from typing import Any, Dict, cast, List
-from boa3.builtin.type import UInt160
-from boa3.builtin.type.helper import to_bytes, to_int
-from boa3.builtin.interop.storage import get, put
-from boa3.builtin.interop.stdlib import serialize, deserialize
+from boa3.sc.types import UInt160
+from boa3.sc.utils import to_bytes, to_int
+from boa3.sc.storage import get, put
+from boa3.sc.contracts import StdLib
 
 ####################################
 ####################################
@@ -15,7 +15,7 @@ class Collection:
 
     def __init__(self):
         self._id: bytes = b''
-        self._author: UInt160 = b''
+        self._author: UInt160 = UInt160()
         self._description: bytes = b''
         self._type: bytes = b''
         self._extra: bytes = b''
@@ -87,7 +87,7 @@ def create_collection_internal(author: UInt160, description: bytes, collection_t
     collection.set_type(collection_type)
 
     key: bytes = mk_collection_key(collection_id)
-    put(key, serialize(collection))
+    put(key, StdLib.serialize(collection))
     put(TOTAL_COLLECTIONS, collection_id)
     return collection_id
 
@@ -109,7 +109,7 @@ def get_collection_internal(collection_id: bytes) -> Collection:
     :return: A Collection class instance
     """
     collection_bytes: bytes = get_collection_raw_internal(collection_id)
-    return cast(Collection, deserialize(collection_bytes))
+    return cast(Collection, StdLib.deserialize(collection_bytes))
 
 
 def get_collection_raw_internal(collection_id: bytes) -> bytes:

@@ -1,0 +1,24 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSample" aria-labelledby="offcanvasSampleLabel">
+  <div class="offcanvas-header flex-column">
+    <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="offcanvas-title" id="offcanvasSampleLabel">Sample from collection</div>
+    <div class="text-white-50 fw-light fs-5 mt-1">Samples uniformly random values from an existing collection</div>
+  </div>
+  <div class="offcanvas-body">
+    <form id="form-sample-collection">
+      <div class="mb-3">
+        <label class="form-label">Collection ID</label>
+        <select class="form-select" name="collection-id" aria-label="Collection ID">
+        </select>
+        <label class="form-label">Sample count</label>
+        <input name="sample-count" type="number" class="text-white" aria-label="Sample count" data-bs-toggle="tooltip"
+          data-bs-title="The number of samples to take from the collection">
+      </div>
+      <div style="margin-top: 20px;" class="d-flex justify-content-end">
+        <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Sample</button>
+        <button name="btn-disabled" style="width: 360px;" disabled
+          class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -78,7 +78,7 @@
             },
             {
                 "name": "get_collection_length",
-                "offset": 84,
+                "offset": 89,
                 "parameters": [
                     {
                         "type": "ByteArray",
@@ -90,7 +90,7 @@
             },
             {
                 "name": "get_collection_values",
-                "offset": 94,
+                "offset": 99,
                 "parameters": [
                     {
                         "type": "ByteArray",
@@ -105,7 +105,7 @@
             },
             {
                 "name": "map_bytes_onto_collection",
-                "offset": 108,
+                "offset": 118,
                 "parameters": [
                     {
                         "type": "ByteArray",
@@ -121,7 +121,7 @@
             },
             {
                 "name": "sample_from_collection",
-                "offset": 191,
+                "offset": 206,
                 "parameters": [
                     {
                         "type": "ByteArray",
@@ -140,7 +140,7 @@
             },
             {
                 "name": "sample_from_runtime_collection",
-                "offset": 376,
+                "offset": 396,
                 "parameters": [
                     {
                         "type": "Array",
@@ -166,14 +166,14 @@
             },
             {
                 "name": "total_collections",
-                "offset": 580,
+                "offset": 600,
                 "parameters": [],
                 "safe": false,
                 "returntype": "Integer"
             },
             {
                 "name": "update",
-                "offset": 586,
+                "offset": 606,
                 "parameters": [
                     {
                         "type": "ByteArray",
@@ -193,7 +193,7 @@
             },
             {
                 "name": "_deploy",
-                "offset": 876,
+                "offset": 936,
                 "parameters": [
                     {
                         "type": "Any",

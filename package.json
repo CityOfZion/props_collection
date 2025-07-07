@@ -1,0 +1,10 @@
+{
+  "workspaces": ["./sdk-ts", "./front-end"],
+  "scripts": {
+    "build-sdk": "npm --workspace sdk-ts run build",
+    "build-dapp": "npm --workspace front-end run build",
+    "build": "npm run build-sdk && npm run build-dapp",
+    "dev": "npm --workspace front-end run dev",
+    "preview": "npm --workspace front-end run preview"
+  }
+}

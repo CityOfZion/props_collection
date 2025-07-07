@@ -1,11 +1,10 @@
 from typing import Any, Dict, cast, List
-from boa3.builtin.type import UInt160
-from boa3.builtin.type.helper import to_int
-from boa3.builtin.compile_time import CreateNewEvent, NeoMetadata, metadata, public, contract
-from boa3.builtin.interop.blockchain import Transaction
-from boa3.builtin.interop.runtime import script_container
-from boa3.builtin.interop.contract import update_contract
-from boa3.builtin.interop.storage import get, put
+from boa3.sc.utils import to_int, CreateNewEvent
+from boa3.sc.compiletime import NeoMetadata, public
+from boa3.sc.types import Transaction, UInt160
+from boa3.sc.runtime import script_container
+from boa3.sc.contracts import ContractManagement
+from boa3.sc.storage import get, put
 from helpers.collection import Collection, create_collection_internal, get_collection_json_internal, \
     get_collection_internal, total_collections_internal
 
@@ -15,7 +14,6 @@ from cpm_out.dice.contract import Dice
 OWNER_KEY = b'OWNER'
 
 
-@metadata
 def manifest_metadata() -> NeoMetadata:
     """
     Defines this smart contract's metadata information
@@ -190,7 +188,7 @@ def update(script: bytes, manifest: bytes, data: Any):
 
     assert owner == signer, "User Permission Denied"
 
-    update_contract(script, manifest, data)
+    ContractManagement.update(script, manifest, data)
 
 
 @public

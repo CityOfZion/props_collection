@@ -1,0 +1,32 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSampleRuntime"
+  aria-labelledby="offcanvasSampleRuntimeLabel">
+  <div class="offcanvas-header flex-column">
+    <button type="button" class="btn-close me-2 mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="offcanvas-title" id="offcanvasSampleRuntimeLabel">Sample from Runtime collection</div>
+    <div class="text-white-50 fw-light fs-5 mt-1">Samples uniformly random values from a collection that you choose to provide in this feature</div>
+  </div>
+  <div class="offcanvas-body">
+    <form id="form-sample-runtime-collection">
+      <div class="mb-3">
+        <label class="form-label d-flex gap-1">Values<div class="fs-14px fw-lighter align-self-end">(CSV
+            formatted)</div>
+        </label>
+        <textarea name="values" aria-label="Values" data-bs-toggle="tooltip" data-bs-title="The values that will populate the collection. Use commas to separate the values"></textarea>
+
+        <label class="form-label">Sample count</label>
+        <input name="sample-count" type="number" class="text-white" aria-label="Sample count" data-bs-toggle="tooltip" data-bs-title="The number of samples to take from the collection">
+
+        <div class="form-check form-switch form-check-reverse d-flex" data-bs-toggle="tooltip" data-bs-title="Are selected values removed from the list of options for future samples?">
+          <label class="form-check-label" for="sampleRuntimeSwitch">Pick</label>
+          <input class="form-check-input ms-auto form-switch-lg" type="checkbox" role="switch" name="switch"
+            id="sampleRuntimeSwitch">
+        </div>
+      </div>
+      <div style="margin-top: 20px;" class="d-flex justify-content-end">
+        <button name="btn-submit" type="submit" class="btn btn-lg btn-outline-primary">Sample</button>
+        <button name="btn-disabled" style="width: 360px;" disabled
+          class="btn btn-lg btn-outline-primary px-5 d-none position-relative"></button>
+      </div>
+    </form>
+  </div>
+</div>
